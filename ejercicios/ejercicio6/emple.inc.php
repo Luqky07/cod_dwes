@@ -4,5 +4,5 @@
 define('HOST', 'localhost');
 define('BD', 'empresa');
 define('USER', 'root');
-define('PWD', 'root');
+define('PWD', '');
 define('CHRST', 'utf8');

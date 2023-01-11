@@ -48,7 +48,7 @@ function close(){
 	
 }//class
 //Ejemplo básico para ver si conecta y ejecuta SQL
-try{
+/* try{
 	
 	$c= new Conn();		
 	$bd= $c->getConn();
@@ -64,6 +64,6 @@ try{
 	
 }catch(PDOException $e){
 	echo "<h1>Error</h1>";
-}
+} */
 
 
