@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://localhost/gesventa/panel.php -->
+<html lang="es">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>GESTIÓN DE VENTASFORM-/ut3/put3/index.php</title>
+</head>
+
+<body>
+	<br>
+	<div style="width:100%; height:20%; text-align:center; margin:1%;">
+		<h1>BIENVENIDO a GESVENTAS</h1>
+		<a href="http://localhost/gesventa/login.php" style="margin: 0% 3%;">LOGIN</a>
+		<a href="http://localhost/gesventa/registro.php" style="margin: 0% 3%;">REGISTRARSE</a>
+		<a href="http://localhost/gesventa/logout.php" style="margin: 0% 3%;">LOGOUT</a>
+		<a href="http://localhost/gesventa/index.php" style="margin: 0% 3%;">INICIO</a>
+		<a href="http://localhost/gesventa/carrito.php" style="margin: 0% 3%;">CARRITO</a>
+	</div>
+	<div style="overflow:hidden; width:100%; height:80%;">
+		<div id="tables" style="float:left; width:30%; ">
+			<form action="http://localhost/gesventa/index.php" method="POST">
+				<!--target="_blank"-->
+			</form>
+			<fieldset>
+				<legend>Gestionar: </legend>
+
+				<table>
+					<tbody>
+						<tr>
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td>clientes</td>
+							<td>
+								<select name="accion">
+									<option value="query">CONSULTAR</option>
+									<option value="insert">NUEVO REGISTRO</option>
+								</select>
+							</td>
+							<input type="hidden" name="table" value="clientes">
+							<td><input type="submit" value="IR"></td>
+						</tr>
+						<tr>
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td>facturas</td>
+							<td><select name="accion">
+									<option value="query">CONSULTAR</option>
+									<option value="insert">NUEVO REGISTRO</option>
+								</select></td>
+							<input type="hidden" name="table" value="facturas">
+							<td><input type="submit" value="IR"></td>
+						</tr>
+						<tr>
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td>productos</td>
+							<td><select name="accion">
+									<option value="query">CONSULTAR</option>
+									<option value="insert">NUEVO REGISTRO</option>
+								</select></td>
+							<input type="hidden" name="table" value="productos">
+							<td><input type="submit" value="IR"></td>
+						</tr>
+						<tr>
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td>proveedores</td>
+							<td><select name="accion">
+									<option value="query">CONSULTAR</option>
+									<option value="insert">NUEVO REGISTRO</option>
+								</select></td>
+							<input type="hidden" name="table" value="proveedores">
+							<td><input type="submit" value="IR"></td>
+						</tr>
+						<tr>
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td>usuarios</td>
+							<td><select name="accion">
+									<option value="query">CONSULTAR</option>
+									<option value="insert">NUEVO REGISTRO</option>
+								</select></td>
+							<input type="hidden" name="table" value="usuarios">
+							<td><input type="submit" value="IR"></td>
+						</tr>
+					</tbody>
+				</table>
+			</fieldset>
+
+			<fieldset>
+				<legend>Filtros: </legend>
+				<strong>productos: query</strong><br>
+				<table>
+					<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+					<tbody>
+						<tr>
+							<td><label for="cod">cod</label></td>
+							<td><input type="number" name="fields[cod]"></td>
+						</tr>
+						<tr>
+							<td><label for="nom_prod">nom_prod</label></td>
+							<td><input type="text" name="fields[nom_prod]"></td>
+						</tr>
+						<tr>
+							<td><label for="pvp">pvp</label></td>
+							<td><input type="number" name="fields[pvp]"></td>
+						</tr>
+						<tr>
+							<td><label for="prov">prov</label></td>
+							<td><input type="text" name="fields[prov]"></td>
+						</tr>
+						<tr>
+							<td><label for="imagen">imagen</label></td>
+							<td><input type="text" name="fields[imagen]"></td>
+						</tr>
+						<tr>
+							<td><label for="existencias">existencias</label></td>
+							<td><input type="number" name="fields[existencias]"></td>
+						</tr>
+					</tbody>
+				</table>
+				<input type="hidden" name="table" value="productos">
+				<input type="hidden" name="accion" value="query">
+				<br><input type="submit" value="ENVIAR" style="float:right;">
+
+			</fieldset>
+		</div>
+
+		<div id="cuerpo" style="width:70%; float:left;">
+			<fieldset>
+				<legend>Resultados: </legend>
+				<h3>RESULTADOS</h3>
+				<table style="border: none; width:100%;">
+					<tbody>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">1</td>
+							<td style="left:10px;">Z323</td>
+							<td style="left:10px;">71.90</td>
+							<td style="left:10px;">J04131348</td>
+							<td style="left:10px;">auriculares-mp3.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+								</select></td>
+							<td><br><input type="submit" name="1" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="1">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">2</td>
+							<td style="left:10px;">Z623</td>
+							<td style="left:10px;">209.00</td>
+							<td style="left:10px;">J04131348</td>
+							<td style="left:10px;">batmanbot.jpeg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+								</select></td>
+							<td><br><input type="submit" name="2" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="2">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">3</td>
+							<td style="left:10px;">Z906</td>
+							<td style="left:10px;">399.00</td>
+							<td style="left:10px;">J04131348</td>
+							<td style="left:10px;">cargador.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+								</select></td>
+							<td><br><input type="submit" name="3" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="3">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">4</td>
+							<td style="left:10px;">Z506</td>
+							<td style="left:10px;">125.00</td>
+							<td style="left:10px;">J04131348</td>
+							<td style="left:10px;">auriculares-mp3.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+								</select></td>
+							<td><br><input type="submit" name="4" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="4">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">11</td>
+							<td style="left:10px;">Argon</td>
+							<td style="left:10px;">50.00</td>
+							<td style="left:10px;">D7767763A</td>
+							<td style="left:10px;">regulador-botella-argon.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select></td>
+							<td><br><input type="submit" name="11" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="11">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">12</td>
+							<td style="left:10px;">Neon</td>
+							<td style="left:10px;">35.00</td>
+							<td style="left:10px;">D7767763A</td>
+							<td style="left:10px;">neon.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+								</select></td>
+							<td><br><input type="submit" name="12" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="12">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">13</td>
+							<td style="left:10px;">Ocelote</td>
+							<td style="left:10px;">59.90</td>
+							<td style="left:10px;">D7767763A</td>
+							<td style="left:10px;">raton-ocelote-gaming.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select></td>
+							<td><br><input type="submit" name="13" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="13">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">22</td>
+							<td style="left:10px;">Death Stalker</td>
+							<td style="left:10px;">299.99</td>
+							<td style="left:10px;">P3941094I</td>
+							<td style="left:10px;">razer-deathstalker-chroma-keyboard.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+								</select></td>
+							<td><br><input type="submit" name="22" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="22">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">23</td>
+							<td style="left:10px;">Orb Weaver</td>
+							<td style="left:10px;">129.99</td>
+							<td style="left:10px;">P3941094I</td>
+							<td style="left:10px;">orbweaverchroma.png</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select></td>
+							<td><br><input type="submit" name="23" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="23">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">24</td>
+							<td style="left:10px;">Black Widow</td>
+							<td style="left:10px;">149.00</td>
+							<td style="left:10px;">P3941094I</td>
+							<td style="left:10px;">envy-phoenix-810-401lns.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+								</select></td>
+							<td><br><input type="submit" name="24" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="24">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">31</td>
+							<td style="left:10px;">Envy Phoenix 810-401ns</td>
+							<td style="left:10px;">2599.00</td>
+							<td style="left:10px;">A36109494</td>
+							<td style="left:10px;">envy-phoenix-810-401lns.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select></td>
+							<td><br><input type="submit" name="31" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="31">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">32</td>
+							<td style="left:10px;">Envy Recline 23-k301ns</td>
+							<td style="left:10px;">1399.00</td>
+							<td style="left:10px;">A36109494</td>
+							<td style="left:10px;">pavillon-500-354ns.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+								</select></td>
+							<td><br><input type="submit" name="32" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="32">
+
+						</tr>
+						<tr style="padding: 0 20% 0 0;">
+							<form action="http://localhost/gesventa/panel.php" method="POST"></form>
+							<td style="left:10px;">33</td>
+							<td style="left:10px;">Pavilion 500-354ns</td>
+							<td style="left:10px;">499.00</td>
+							<td style="left:10px;">A36109494</td>
+							<td style="left:10px;">pavillon-500-354ns.jpg</td>
+							<td><select name="uds">
+									<option value="0" selected="">0</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+								</select></td>
+							<td><br><input type="submit" name="33" value="AÑADIR"></td>
+							<input type="hidden" name="prod" value="33">
+
+						</tr>
+					</tbody>
+				</table>
+
+
+			</fieldset>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>
