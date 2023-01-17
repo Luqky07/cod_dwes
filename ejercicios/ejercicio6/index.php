@@ -6,13 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+</head>
+
+<body>
     <?php
     require_once("model.inc.php");
     require_once("vista.inc.php");
     require_once("const.inc.php");
 
     $m = new Modelo();
-    $v = new Vista();
+    $v = new Vista("es");
 
     if (isset($_SESSION['user'])) {
         //Si vuelvo desde una página con sesión, la elimino
@@ -28,13 +31,10 @@
             //$_SESSION['lang'] = $_POST['lang']
             header('Location: front.php');
         } else {
-            echo LANGS[$v->lang]['nodata'.BR];
+            echo LANGS[$v->lang]['nodata' . BR];
         }
     }
     ?>
-</head>
-
-<body>
     <form method="post" action="<?php echo $_SERVER['PHP_SELF'] ?>">
         <label for="user">Usuario</label>
         <input id="user" type="text" name="user">
