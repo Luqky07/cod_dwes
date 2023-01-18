@@ -15,7 +15,7 @@ class Modelo
             try {
                 $c = new Conn();
                 $bd = $c->getConn(); //referencia a la BD
-                $stmt = $bd->prepare("SELECT * FROM usuarios WHERE NOMBRE = :usr AND CLAVE = :pass");
+                $stmt = $bd->prepare("SELECT * FROM usuarios WHERE USR = :usr AND PASS = :pass");
                 $stmt->execute([':usr' => $datos['user'], ':pass' => md5($datos['pass'])]);
                 if ($stmt->rowCount() != 1)
                     $mssg = "fail";

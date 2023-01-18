@@ -30,9 +30,9 @@
         if ($error == "") {
             $_SESSION['user'] = $_POST['user'];
             //$_SESSION['lang'] = $_POST['lang']
-            header('Location: front/index.php');
+            header('Location: front.php');
         } else {
-            echo LANGS[$v->lang][$error].BR;
+            echo "ERROR en el usuario o contraseña" . BR;
         }
     }
     ?>
