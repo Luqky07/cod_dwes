@@ -19,6 +19,7 @@ class ProductoDAO
             //Consulta SIN PREPARAR
             $q = "SELECT * FROM PRODUCTOS";
             $prods = $bd->query($q);
+            return $prods->fetchAll();
             $dbh->close();
         } catch (PDOException $e) {
             return NULL;

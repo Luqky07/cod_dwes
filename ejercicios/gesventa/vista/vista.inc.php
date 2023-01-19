@@ -1,5 +1,6 @@
 <?php
 require_once("const.inc.php");
+require_once("modelo/productoDAO.inc.php");
 class Vista
 {
     public $lang;
@@ -8,8 +9,9 @@ class Vista
         $this->lang = $lang;
     }
 
-    function menu_nav() {
-        $s ="";
+    function menu_nav()
+    {
+        $s = "";
         foreach (OPS as $k => $v) {
             $s .= "<a href='$v' style='margin: 0% 3%;'>";
             $s .= LANGS[$this->lang][$k] . "</a>\n";
@@ -60,7 +62,9 @@ class Vista
         $f = "<form action = '" . $_SERVER['PHP_SELF'] . "' method='POST'>";
         $f .= "<select name='lang'>\n";
         foreach (LANGS as $k => $v) {
-            $f .= "<option value='$k'>" . $v["lang"] . "</option>";
+            $f .= "<option value='$k' ";
+            if ($this->lang == $k) $f .= "selected";
+            $f .= ">" . $v["lang"] . "</option>";
         }
         $f .= "</select>\n";
         $f .= "<input name='enviar' type='submit' value='enviar'/>\n";
@@ -73,10 +77,36 @@ class Vista
         $s = "<div style='width:100%; height: 20%; text-align:center; margin:1%'>\n";
         $s .= "<h1>GESVENTAS</h1>\n";
 
-        $s .= $this->menu_nav().BR;
+        $s .= $this->menu_nav() . BR;
         $s .= $this->hola($_SESSION);
 
-        $s .= "</div>";
+        $s .= "</div>\n";
         return $s;
+    }
+
+    public function allProds()
+    {
+        $dao = new ProductoDAO();
+        $prods = $dao->getAll();
+        $list = "<table style='border: none; width:100%;'>\n<tbody>";
+        foreach ($prods as $v) {
+            $list .= "<tr style='padding: 0 20% 0 0;>\n
+            <form action='http://localhost/gesventa/panel.php' method='POST'></form>\n";
+            foreach ($v as $subK => $subV) {
+                if (is_numeric($subK)) {
+                    $list .= "<td style='left:10px;'>$subV</td>\n";
+                }
+            }
+            $list .= "<td>\n<select name='uds'>\n<option value='0' selected=''>0</option>\n";
+            if ($v[0] == 11 || $v[0] == 13 || $v[0] == 23 || $v[0] == 31 || $v[0] == 33) {
+                for ($i = 1; $i <= 5; $i++) {
+                    $list .= "<option value='$i'>$i</option>\n";
+                }
+            }
+            $list .= "</select>\n</td>\n
+                    <td><br><input type='submit' name='" . $v[0] . "' value='AÑADIR'></td>\n
+                    <input type='hidden' name='prod' value='" . $v[0] . "'>\n";
+        }
+        echo $list;
     }
 }

@@ -11,9 +11,9 @@
 
 <body>
     <?php
-    require_once("model.inc.php");
-    require_once("vista.inc.php");
-    require_once("const.inc.php");
+    require_once("modelo/model.inc.php");
+    require_once("vista/vista.inc.php");
+    require_once("vista/const.inc.php");
 
     $m = new Modelo();
     $v = new Vista("es");

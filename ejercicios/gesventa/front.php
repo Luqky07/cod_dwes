@@ -14,12 +14,37 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
 
 <body>
     <?php
-    require_once("productoDAO.inc.php");
-    require_once("vista.inc.php");
-    $v = new Vista("es");
+    require_once("modelo/productoDAO.inc.php");
+    require_once("vista/vista.inc.php");
+    if(isset($_POST["enviar"])) $v = new Vista($_POST["lang"]);
+    else $v = new Vista("es");
     echo $v->cabecera();
     $prod = new ProductoDAO();
     ?>
+
+    <div style="overflow:hidden; width:100%; height:80%;">
+        <div id="tables" style="float:left; width:30%; ">
+            <form action="http://localhost/gesventa/index.php" method="POST">
+                <!--target="_blank"-->
+            </form>
+            <fieldset style="border: 3px solid black; height: 150px">
+                <legend>Gestionar: </legend>
+            </fieldset>
+
+            <fieldset style="border: 3px solid black; height: 150px">
+                <legend>Filtros: </legend>
+            </fieldset>
+        </div>
+
+        <div id="cuerpo" style="width:70%; float:left;">
+            <fieldset style="border: 3px solid black; height: 320px">
+                <legend>Resultados: </legend>
+                <?php $v->allProds() ?>
+            </fieldset>
+
+        </div>
+
+    </div>
 </body>
 
 </html>
