@@ -25,7 +25,6 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     <div style="overflow:hidden; width:100%; height:80%;">
         <div id="tables" style="float:left; width:30%; ">
             <form action="http://localhost/gesventa/index.php" method="POST">
-                <!--target="_blank"-->
             </form>
             <fieldset style="border: 3px solid black; height: 150px">
                 <legend>Gestionar: </legend>
