@@ -16,8 +16,13 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     <?php
     require_once("modelo/productoDAO.inc.php");
     require_once("vista/vista.inc.php");
-    if(isset($_POST["enviar"])) $v = new Vista($_POST["lang"]);
-    else $v = new Vista("es");
+    $v;
+
+    if (isset($_POST['idiom'])) $v = new Vista($_POST["lang"]);
+    else {
+        $v = new Vista($_SESSION["lang"]);
+    }
+    $_SESSION["lang"] = $v->lang;
     echo $v->cabecera();
     $prod = new ProductoDAO();
     ?>

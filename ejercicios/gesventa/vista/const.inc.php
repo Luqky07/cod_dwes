@@ -3,15 +3,19 @@ define("BR", "<br />\n");
 
 define("LANGS", [
     'es' => [
-        "lang" => "ESPAÑOL", 
-        "welcome" => "BIENVENIDO",
+        "lang" => "ESPAÑOL",
+        "welcome" => "BIENVENIDO/A",
         "login" => "LOGIN",
         "register" => "REGISTRARSE",
         "logout" => "SALIR",
         "index" => "INICIO",
         "cart" => "CARRITO",
         "nodata" => "Porfavor, introduce tu usario y contraseña",
-        "fail" => "Error en el usuario o contraseña"
+        "fail" => "Error en el usuario o contraseña",
+        "user" => "Usuario",
+        "pass" => "Contraseña",
+        "idiom" => "Idioma",
+        "initMssg" => "Formulario de entrada"
     ],
     'en' => [
         "lang" => "ENGLISH",
@@ -22,7 +26,11 @@ define("LANGS", [
         "index" => "INDEX",
         "cart" => "CART",
         "nodata" => "Please, enter your user and password",
-        "fail" => "Wrong user or password"
+        "fail" => "Wrong user or password",
+        "user" => "User",
+        "pass" => "Password",
+        "idiom" => "Languaje",
+        "initMssg" => "Input form"
     ],
     'fr' => [
         "lang" => "FRANÇAIS",
@@ -32,8 +40,12 @@ define("LANGS", [
         "logout" => "EXIT",
         "index" => "COMMENCER",
         "cart" => "CART",
-        "nodata" => "S\'il vous plaît, introduce tu usario y contraseña",
-        "fail" => "Error en el usuario o contraseña"
+        "nodata" => "S\'il vous plaît, entrez votre nom d'utilisateur et votre mot de passe",
+        "fail" => "Erreur d'utilisateur ou de mot de passe",
+        "user" => "Utilisateur",
+        "pass" => "Mot de passe",
+        "idiom" => "Langage",
+        "initMssg" => "Formulaire de saisie"
     ]
 ]);
 
@@ -46,4 +58,3 @@ define('OPS', [
 ]);
 
 $crud = ["CONSULTAR", "INSERTAR", "BORRAR", "MODIFICAR"];
-

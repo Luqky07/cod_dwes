@@ -1,16 +1,13 @@
 <?php
 require_once("const.inc.php");
 require_once("modelo/productoDAO.inc.php");
-class Vista
-{
+class Vista {
     public $lang;
-    public function __construct($lang = "en")
-    {
+    public function __construct($lang = "en") {
         $this->lang = $lang;
     }
 
-    function menu_nav()
-    {
+    function menu_nav() {
         $s = "";
         foreach (OPS as $k => $v) {
             $s .= "<a href='$v' style='margin: 0% 3%;'>";
@@ -19,8 +16,7 @@ class Vista
         return $s;
     }
 
-    function tabla($t)
-    {
+    function tabla($t) {
         echo ("<table border=1>" . BR);
         echo ("<tr>");
         foreach ($t[0] as $k => $f) {
@@ -36,8 +32,7 @@ class Vista
         }
         echo ("</table>\n");
     }
-    function tablaCR($t)
-    {
+    function tablaCR($t) {
         $s = "<table border=1>" . BR;
         $s .= "<tr>";
         foreach ($t[0] as $k => $f) {
@@ -55,10 +50,14 @@ class Vista
         echo $s;
     }
 
-    public function hola($ses)
-    {
+    public function hola($ses) {
         $m =  "<h1>" . LANGS[$this->lang]['welcome'] . ", " . $ses['user'] . "</h1>";
 
+        
+        return $m . $this->formIdiom();
+    }
+
+    public function formIdiom() {
         $f = "<form action = '" . $_SERVER['PHP_SELF'] . "' method='POST'>";
         $f .= "<select name='lang'>\n";
         foreach (LANGS as $k => $v) {
@@ -67,13 +66,12 @@ class Vista
             $f .= ">" . $v["lang"] . "</option>";
         }
         $f .= "</select>\n";
-        $f .= "<input name='enviar' type='submit' value='enviar'/>\n";
+        $f .= "<input name='idiom' type='submit' value='".LANGS[$this->lang]["idiom"]."'/>\n";
         $f .= "</form>";
-        return $m . $f;
+        return $f;
     }
 
-    public function cabecera()
-    {
+    public function cabecera() {
         $s = "<div style='width:100%; height: 20%; text-align:center; margin:1%'>\n";
         $s .= "<h1>GESVENTAS</h1>\n";
 
@@ -84,8 +82,7 @@ class Vista
         return $s;
     }
 
-    public function allProds()
-    {
+    public function allProds() {
         $dao = new ProductoDAO();
         $prods = $dao->getAll();
         $list = "<table style='border: none; width:100%;'>\n<tbody>";
@@ -108,5 +105,15 @@ class Vista
                     <input type='hidden' name='prod' value='" . $v[0] . "'>\n";
         }
         echo $list;
+    }
+    public function formLogin() {
+        $f = "<h1>".LANGS[$this->lang]["initMssg"]."</h1>\n";
+        $f .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+        $f .= "<label for='user'>".LANGS[$this->lang]["user"]."</label>\n";
+        $f .= "<input id='user' type='text' name='user'>".BR;
+        $f .= "<label for='pass'>".LANGS[$this->lang]["pass"]."</label>\n";
+        $f .= "<input id='pass' type='password' name='pass'>".BR;
+        $f .= "<input type='submit' value='Login' name='enviar'>\n</form>\n";
+        echo $f . BR . $this->formIdiom();
     }
 }
