@@ -1,5 +1,6 @@
 <?php
-define("BR", "<br />\n");
+define("BR", "<br>\n");
+define("TTL", "GESVENTAS APP");
 
 define("LANGS", [
     'es' => [
@@ -50,9 +51,9 @@ define("LANGS", [
 ]);
 
 define('OPS', [
-    "login" => "login.php",
-    "register" => "registro.php",
-    "logout" => "logout.php",
+    //"login" => "login.php",
+    // "register" => "registro.php",
+    "logout" => "login.php",
     "index" => "index.php",
     "cart" => "carrito.php"
 ]);
