@@ -16,7 +16,11 @@ define("LANGS", [
         "user" => "Usuario",
         "pass" => "Contraseña",
         "idiom" => "Idioma",
-        "initMssg" => "Formulario de entrada"
+        "initMssg" => "Formulario de entrada",
+        "menu" => "Menú",
+        "section" => "Sección",
+        "filtreMssg" => "Esta es una sección de filtros",
+        "btnConsul" => "CONSULTAR"
     ],
     'en' => [
         "lang" => "ENGLISH",
@@ -31,7 +35,11 @@ define("LANGS", [
         "user" => "User",
         "pass" => "Password",
         "idiom" => "Languaje",
-        "initMssg" => "Input form"
+        "initMssg" => "Input form",
+        "menu" => "Menu",
+        "section" => "Section",
+        "filtreMssg" => "This is a filter section",
+        "btnConsul" => "CONSULT"
     ],
     'fr' => [
         "lang" => "FRANÇAIS",
@@ -46,7 +54,11 @@ define("LANGS", [
         "user" => "Utilisateur",
         "pass" => "Mot de passe",
         "idiom" => "Langage",
-        "initMssg" => "Formulaire de saisie"
+        "initMssg" => "Formulaire de saisie",
+        "menu" => "Menu",
+        "section" => "Section",
+        "filtreMssg" => "Ceci est une section de filtre",
+        "btnConsul" => "CONSULTER"
     ]
 ]);
 

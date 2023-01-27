@@ -101,6 +101,11 @@ class Vista
         return $s;
     }
 
+    /*
+    A mejorar:
+        -Cambiar la función para que trabaje recibiendo un array y no usando métodos del
+        Modelo.
+    */
     private function allProds()
     {
         $dao = new ProductoDAO();
@@ -141,22 +146,22 @@ class Vista
 
     private function frontMenu(){
         $f = "<fieldset style='border: 2px solid black; height: 50%'>\n";
-        $f .= "<legend>Menu: </legend>\n<button>Boton</button>\n";
+        $f .= "<legend>".LANGS[$this->lang]["menu"].": </legend>\n<button>".LANGS[$this->lang]["btnConsul"]."</button>\n";
         $f .= "</fieldset>\n";
         $f .= "<fieldset style='border: 2px solid black; height: 50%'>\n";
         return $f;
     }
 
     private function frontFiltro() {
-        $f = "<legend>Filtros: </legend>\n";
-        $f .= "<h1>Esta es una sección de flitros</h1></fieldset>\n";
+        $f = "<legend>".LANGS[$this->lang]["section"].": </legend>\n";
+        $f .= "<h1>".LANGS[$this->lang]["filtreMssg"]."</h1></fieldset>\n";
         return $f;
     }
 
     private function frontCuerpo() {
         $f = "<div id='cuerpo' style='width:70%; float:left; height: 95%;'>\n";
         $f .= "<fieldset style='border: 2px solid black; height: 100%; overflow:scroll;'>\n";
-        $f .= "<legend>Sección: </legend>\n";
+        $f .= "<legend>".LANGS[$this->lang]["section"].": </legend>\n";
         $f .= $this->allProds();
         $f .= "</fieldset>\n</div>\n";
         return $f;
