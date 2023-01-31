@@ -20,7 +20,17 @@ define("LANGS", [
         "menu" => "Menú",
         "section" => "Sección",
         "filtreMssg" => "Esta es una sección de filtros",
-        "btnConsul" => "CONSULTAR"
+        "mssgLabelProdCod" => "Código del producto",
+        "search" => "Buscar",
+        "bdCod" => "Código",
+        "bdNomProd" => "Nombre",
+        "bdPrice" => "Precio",
+        "bdProv" => "Proveedor",
+        "bdImg" => "Imágen",
+        "query" => "Consulta",
+        "new" => "Nuevo",
+        "delete" => "Borrar",
+        "update" => "Actualizar"
     ],
     'en' => [
         "lang" => "ENGLISH",
@@ -39,7 +49,18 @@ define("LANGS", [
         "menu" => "Menu",
         "section" => "Section",
         "filtreMssg" => "This is a filter section",
-        "btnConsul" => "CONSULT"
+        "btnConsul" => "CONSULT",
+        "mssgLabelProdCod" => "Product code",
+        "search" => "Search",
+        "bdCod" => "Code",
+        "bdNomProd" => "Name",
+        "bdPrice" => "Price",
+        "bdProv" => "Vendor",
+        "bdImg" => "Picture",
+        "query" => "Query",
+        "new" => "New",
+        "delete" => "Delete",
+        "update" => "Update"
     ],
     'fr' => [
         "lang" => "FRANÇAIS",
@@ -58,7 +79,18 @@ define("LANGS", [
         "menu" => "Menu",
         "section" => "Section",
         "filtreMssg" => "Ceci est une section de filtre",
-        "btnConsul" => "CONSULTER"
+        "btnConsul" => "CONSULTER",
+        "mssgLabelProdCod" => "Code produit",
+        "search" => "Chercher",
+        "bdCod" => "Code",
+        "bdNomProd" => "Nom",
+        "bdPrice" => "Prix",
+        "bdProv" => "Fournisseur",
+        "bdImg" => "Photo",
+        "query" => "Mettre en doute",
+        "new" => "Nouveau",
+        "delete" => "Effacer",
+        "update" => "Mettre à jour"
     ]
 ]);
 
@@ -70,4 +102,6 @@ define('OPS', [
     "cart" => "carrito.php"
 ]);
 
-$crud = ["CONSULTAR", "INSERTAR", "BORRAR", "MODIFICAR"];
+define('CRUD', ["query", "new", "delete", "update"]);
+
+define('PRODBD', ["bdCod", "bdNomProd", "bdPrice", "bdProv", "bdImg"]);

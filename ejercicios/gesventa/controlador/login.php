@@ -2,9 +2,9 @@
 <?php
 session_start();
 
-require_once("modelo/model.inc.php");
-require_once("vista/vista.inc.php");
-require_once("vista/const.inc.php");
+require_once("../modelo/model.inc.php");
+require_once("../vista/vista.inc.php");
+require_once("../vista/const.inc.php");
 
 $m = new Modelo();
 $v = new Vista();
@@ -14,8 +14,8 @@ else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
 
 if (isset($_SESSION['user'])) {
     //Si vuelvo desde una página con sesión, la elimino
-    $_SESSION = [];
-    session_destroy();
+    unset($_SESSION['user']);
+    //session_destroy();
 }
 
 $_SESSION["lang"] = $v->getLang();

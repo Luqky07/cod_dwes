@@ -19,7 +19,7 @@ class ProductoDAO
             //Consulta SIN PREPARAR
             $q = "SELECT * FROM PRODUCTOS";
             $prods = $bd->query($q);
-            return $prods->fetchAll();
+            return $prods->fetchAll(PDO::FETCH_ASSOC);
             $dbh->close();
         } catch (PDOException $e) {
             return NULL;
@@ -33,5 +33,21 @@ class ProductoDAO
             1. RECIBE un dato con el COD de un Producto.
             2. DEVULVE el Producto asociado a ese campo COD.
         */
+        $mssg = null;
+        if(!isset($key)) $mssg = "fail";
+        try {
+            $dbh = new Conn();
+            $bd = $dbh->getConn(); //referencia a la BD
+            $stmt = $bd->prepare("SELECT * FROM PRODUCTOS WHERE COD = :cod");
+            $stmt->execute([':cod' => $key]);
+            if ($stmt->rowCount() != 1) $mssg = "fail";
+            else $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $mssg = "fail";
+        } finally {
+            $dbh->close();
+        }
+       if (isset($mssg)) return $mssg;
+       else return $res;
     }
 }

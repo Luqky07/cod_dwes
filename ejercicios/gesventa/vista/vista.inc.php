@@ -1,6 +1,6 @@
 <?php
 require_once("const.inc.php");
-require_once("modelo/productoDAO.inc.php");
+require_once("../modelo/productoDAO.inc.php");
 class Vista
 {
     private $lang;
@@ -67,7 +67,7 @@ class Vista
 
     private function hola($ses)
     {
-        $m =  "<h1>" . LANGS[$this->lang]['welcome'] . ", " . $ses['user'] . "</h1>";
+        $m =  "<h1>" . LANGS[$this->lang]['welcome'] . ", " . $ses['user'] . "</h1>\n";
 
 
         return $m;
@@ -75,23 +75,23 @@ class Vista
 
     private function formIdiom()
     {
-        $f = "<form action = '" . $_SERVER['PHP_SELF'] . "' method='POST'>";
+        $f = "<form action = '" . $_SERVER['PHP_SELF'] . "' method='POST'>\n";
         $f .= "<select name='lang'>\n";
         foreach (LANGS as $k => $v) {
             $f .= "<option value='$k' ";
             if ($this->lang == $k) $f .= "selected";
-            $f .= ">" . $v["lang"] . "</option>";
+            $f .= ">" . $v["lang"] . "</option>\n";
         }
         $f .= "</select>\n";
         $f .= "<input name='idiom' type='submit' value='" . LANGS[$this->lang]["idiom"] . "'/>\n";
-        $f .= "</form>";
+        $f .= "</form>\n";
         return $f;
     }
 
     public function cabecera()
     {
         $s = "<div style='width:100%; height: 20%; text-align:center; margin:1%'>\n";
-        $s .= "<h1>".TTL."</h1>\n";
+        $s .= "<h1>" . TTL . "</h1>\n";
 
         $s .= $this->menu_nav() . BR;
         $s .= $this->hola($_SESSION);
@@ -106,28 +106,21 @@ class Vista
         -Cambiar la función para que trabaje recibiendo un array y no usando métodos del
         Modelo.
     */
-    private function allProds()
+    private function allProds($prods)
     {
-        $dao = new ProductoDAO();
-        $prods = $dao->getAll();
-        $list = "<table style='border: none; width:100%;'>\n<tbody>";
+        $list = "<table style='border: none; width:100%;'>\n<thead>\n";
+        $list .= "<tr style='padding: 0 20% 0 0;'>\n";
+        foreach (PRODBD as $v) {
+            $list .= "<th>" . LANGS[$this->lang][$v] . "</th>\n";
+        }
+        $list .= "</tr>\n</thead>\n<tbody>\n";
         foreach ($prods as $v) {
             $list .= "<tr style='padding: 0 20% 0 0;'>\n";
-            foreach ($v as $subK => $subV) {
-                if (is_numeric($subK)) {
-                    $list .= "<td style='left:10px;'>$subV</td>\n";
-                }
+            foreach ($v as $subV) {
+                $list .= "<td style='left:10px; padding-left: 30px;'>$subV</td>\n";
             }
-            $list .= "<td>\n<select name='uds'>\n<option value='0' selected=''>0</option>\n";
-            if ($v[0] == 11 || $v[0] == 13 || $v[0] == 23 || $v[0] == 31 || $v[0] == 33) {
-                for ($i = 1; $i <= 5; $i++) {
-                    $list .= "<option value='$i'>$i</option>\n";
-                }
-            }
-            $list .= "</select>\n</td>\n";
-            $list .= "<td><input type='submit' name='" . $v[0] . "' value='AÑADIR'></td>\n</tr>";
         }
-        $list .= "</tbody></table>\n";
+        $list .= "</tr>\n</tbody>\n</table>\n";
         return $list;
     }
 
@@ -144,37 +137,70 @@ class Vista
         echo $f . BR . $this->formIdiom();
     }
 
-    private function frontMenu(){
+    private function frontMenu()
+    {
         $f = "<fieldset style='border: 2px solid black; height: 50%'>\n";
-        $f .= "<legend>".LANGS[$this->lang]["menu"].": </legend>\n<button>".LANGS[$this->lang]["btnConsul"]."</button>\n";
+        $f .= "<legend>" . LANGS[$this->lang]["menu"] . ": </legend>\n";
+        $f .= "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+        foreach (CRUD as $v) {
+            $f .= "<input type='submit' name='$v' value='" . LANGS[$this->lang][$v] . "'>" . BR;
+        }
         $f .= "</fieldset>\n";
         $f .= "<fieldset style='border: 2px solid black; height: 50%'>\n";
         return $f;
     }
 
-    private function frontFiltro() {
-        $f = "<legend>".LANGS[$this->lang]["section"].": </legend>\n";
-        $f .= "<h1>".LANGS[$this->lang]["filtreMssg"]."</h1></fieldset>\n";
+    private function frontFiltro()
+    {
+        $f = "<legend>" . LANGS[$this->lang]["section"] . ": </legend>\n";
+        //$f .= "<h1>" . LANGS[$this->lang]["filtreMssg"] . "</h1>\n";
+        $f .= $this->frontFiltroCod();
+        $f .= "</fieldset>\n";
         return $f;
     }
 
-    private function frontCuerpo() {
+    private function frontFiltroCod()
+    {
+        $f = "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+        $f .= "<label for='prodCod'>" . LANGS[$this->lang]["mssgLabelProdCod"] . "</label>\n";
+        $f .= "<input type='text' name = 'prodCod'>" . BR;
+        $f .= "<input type='submit' name='search' value= '" . LANGS[$this->lang]["search"] . "'>\n";
+        $f .= "</form>\n";
+        return $f;
+    }
+
+    private function frontCuerpo($prods)
+    {
         $f = "<div id='cuerpo' style='width:70%; float:left; height: 95%;'>\n";
         $f .= "<fieldset style='border: 2px solid black; height: 100%; overflow:scroll;'>\n";
-        $f .= "<legend>".LANGS[$this->lang]["section"].": </legend>\n";
-        $f .= $this->allProds();
+        $f .= "<legend>" . LANGS[$this->lang]["section"] . ": </legend>\n";
+        $f .= $this->allProds($prods);
         $f .= "</fieldset>\n</div>\n";
         return $f;
     }
 
-    public function frontArticle() {
+    public function frontArticle($prods)
+    {
         $f = "<div style='overflow:hidden; width:100%; height: 400px'>\n";
         $f .= "<div id='tables' style='float:left; width:30%; height: 90%'>\n";
         $f .= $this->frontMenu();
         $f .= $this->frontFiltro();
         $f .= "</div>\n";
-        $f .= $this->frontCuerpo();
-        $f .= "</div>";
+        $f .= $this->frontCuerpo($prods);
+        $f .= "</div>\n";
         return $f;
+    }
+
+    public function mostrarBoton($post)
+    {
+        $f = "";
+        foreach($post as $k => $v) {
+            foreach(CRUD as $c) {
+                if($k == $c) {
+                    if(isset($post[$k])) $f = "<h1>Se ha pulsado el botón $v</h1>"; 
+                }
+            }
+        }
+        echo $f;
     }
 }

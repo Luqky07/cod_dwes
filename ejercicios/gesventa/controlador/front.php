@@ -14,17 +14,28 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
 
 <body>
     <?php
-    require_once("vista/vista.inc.php");
+    require_once("../vista/vista.inc.php");
+    require_once("../modelo/productoDAO.inc.php");
     $v = new Vista();
+    $p = new ProductoDAO();
 
     if (isset($_POST['idiom'])) $v->setLang($_POST["lang"]);
     else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
 
+    
+    if(isset($_POST['search'])) {
+        $res = $p->get($_POST["prodCod"]);
+        if(!is_string($res)) $prods = $res;
+        else $prods = $p->getAll();
+    }
+    else $prods = $p->getAll();
+
     $_SESSION["lang"] = $v->getLang();
 
     echo $v->cabecera();
-    echo $v->frontArticle();
+    echo $v->frontArticle($prods);
 
+    echo $v->mostrarBoton($_POST);
     ?>
 </body>
 
