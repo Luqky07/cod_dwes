@@ -155,22 +155,17 @@ class Vista
         return $f;
     }
 
-    private function frontFiltro()
+    private function frontFiltro($allFields)
     {
         $f = "<legend>" . LANGS[$this->lang]["filters"] . ": </legend>\n";
-        //$f .= "<h1>" . LANGS[$this->lang]["filtreMssg"] . "</h1>\n";
-        $f .= $this->frontFiltroCod();
-        $f .= "</fieldset>\n";
-        return $f;
-    }
-
-    private function frontFiltroCod()
-    {
-        $f = "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>\n";
-        $f .= "<label for='prodCod'>" . LANGS[$this->lang]["mssgLabelProdCod"] . "</label>\n";
-        $f .= "<input type='text' name = 'prodCod'>" . BR;
+        $f .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+        foreach($allFields as $v) {
+            $f .= "<label for='filter_$v'>" . LANGS[$this->lang][$v] . "</label>\n";
+            $f .= "<input type='text' name = 'filter_$v'>" . BR;
+        }
         $f .= "<input type='submit' name='search' value= '" . LANGS[$this->lang]["search"] . "'>\n";
         $f .= "</form>\n";
+        $f .= "</fieldset>\n";
         return $f;
     }
 
@@ -189,7 +184,7 @@ class Vista
         $f = "<div style='overflow:hidden; width:100%; height: 400px'>\n";
         $f .= "<div id='tables' style='float:left; width:30%; height: 90%'>\n";
         $f .= $this->frontMenu();
-        $f .= $this->frontFiltro();
+        $f .= $this->frontFiltro($allFields);
         $f .= "</div>\n";
         if (isset($arr['new'])) $f .= $this->frontNewProd($allFields);
         else $f .= $this->frontCuerpo($arr, $allFields);
@@ -204,8 +199,8 @@ class Vista
         $f .= "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
         foreach ($allFields as $v) {
             if ($v != "imagen") {
-                $f .= "<label for='$v'>" . LANGS[$this->lang][$v] . "</label>\n";
-                $f .= "<input type='text' name='$v'>" . BR;
+                $f .= "<label for='new_$v'>" . LANGS[$this->lang][$v] . "</label>\n";
+                $f .= "<input type='text' name='new_$v'>" . BR;
             }
         }
         $f .= "<input type='submit' name='newProd' value='" . LANGS[$this->lang]["btnNewProd"] . "'>\n";

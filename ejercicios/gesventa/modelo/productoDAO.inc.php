@@ -51,13 +51,13 @@ class ProductoDAO
        else return $res;
     }
 
-    public function allFields() {
+    public function allFields($table) {
         $mssg = [];
         try {
             $dbh = new Conn();
             $bd = $dbh->getConn();
             //Consulta SIN PREPARAR
-            $q = "DESCRIBE PRODUCTOS";
+            $q = "DESCRIBE $table";
             $prods = $bd->query($q);
             $mssg = $prods->fetchAll(PDO::FETCH_ASSOC);
             $dbh->close();
@@ -69,5 +69,23 @@ class ProductoDAO
             $res[] = $v["Field"];
         }
         return $res;
+    }
+    public function filter($datos){
+        try {
+            $dbh = new Conn();
+            $bd = $dbh->getConn();
+
+            //Consulta SIN PREPARAR
+            $q = "SELECT * FROM PRODUCTOS WHERE";
+            foreach($this->allFields("productos") as $v){
+                var_dump($v);
+                $q .= " $v =" . $datos["filter_$v"];
+            }
+            $prods = $bd->query($q);
+            return $prods->fetchAll(PDO::FETCH_ASSOC);
+            $dbh->close();
+        } catch (PDOException $e) {
+            return NULL;
+        }
     }
 }

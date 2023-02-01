@@ -22,12 +22,15 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     if (isset($_POST['idiom'])) $v->setLang($_POST["lang"]);
     else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
 
-    if(isset($_POST["newProd"])) 
+    if(isset($_POST["newProd"])) {
+
+    }
+    
+    $allFields = $p->allFields("productos");
     
     if(isset($_POST['search'])) {
-        $res = $p->get($_POST["prodCod"]);
-        if(!is_string($res)) $prods = $res;
-        else $prods = $p->getAll();
+        ($p->filter($_POST));
+        $prods = $p->getAll();
     }
     else $prods = $p->getAll();
 
@@ -35,8 +38,8 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
 
     echo $v->cabecera();
 
-    if(isset($_POST['new'])) echo $v->frontArticle($_POST, $p->allFields());
-    else echo $v->frontArticle($prods, $p->allFields());
+    if(isset($_POST['new'])) echo $v->frontArticle($_POST, $allFields);
+    else echo $v->frontArticle($prods, $allFields);
     ?>
 </body>
 
