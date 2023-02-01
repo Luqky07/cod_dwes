@@ -22,6 +22,7 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     if (isset($_POST['idiom'])) $v->setLang($_POST["lang"]);
     else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
 
+    if(isset($_POST["newProd"])) 
     
     if(isset($_POST['search'])) {
         $res = $p->get($_POST["prodCod"]);
@@ -33,9 +34,9 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     $_SESSION["lang"] = $v->getLang();
 
     echo $v->cabecera();
-    echo $v->frontArticle($prods);
 
-    echo $v->mostrarBoton($_POST);
+    if(isset($_POST['new'])) echo $v->frontArticle($_POST, $p->allFields());
+    else echo $v->frontArticle($prods, $p->allFields());
     ?>
 </body>
 

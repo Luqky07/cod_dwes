@@ -50,4 +50,24 @@ class ProductoDAO
        if (isset($mssg)) return $mssg;
        else return $res;
     }
+
+    public function allFields() {
+        $mssg = [];
+        try {
+            $dbh = new Conn();
+            $bd = $dbh->getConn();
+            //Consulta SIN PREPARAR
+            $q = "DESCRIBE PRODUCTOS";
+            $prods = $bd->query($q);
+            $mssg = $prods->fetchAll(PDO::FETCH_ASSOC);
+            $dbh->close();
+        } catch (PDOException $e) {
+            return NULL;
+        }
+        $res = [];
+        foreach($mssg as $v) {
+            $res[] = $v["Field"];
+        }
+        return $res;
+    }
 }

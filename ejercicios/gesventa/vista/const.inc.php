@@ -22,15 +22,24 @@ define("LANGS", [
         "filtreMssg" => "Esta es una sección de filtros",
         "mssgLabelProdCod" => "Código del producto",
         "search" => "Buscar",
-        "bdCod" => "Código",
-        "bdNomProd" => "Nombre",
-        "bdPrice" => "Precio",
-        "bdProv" => "Proveedor",
-        "bdImg" => "Imágen",
-        "query" => "Consulta",
+        "cod" => "Código",
+        "nom_prod" => "Nombre",
+        "pvp" => "Precio",
+        "prov" => "Proveedor",
+        "imagen" => "Imágen",
+        "exts" => "Existencias",
+        "retrieve" => "Consulta",
         "new" => "Nuevo",
         "delete" => "Borrar",
-        "update" => "Actualizar"
+        "update" => "Actualizar",
+        "filters" => "Filtros",
+        "mssgProdName" => "Nombre del producto",
+        "mssgProdPrice" => "Precio del producto",
+        "mssgProdProv" => "Proveedor del producto",
+        "mssgProdImg" => "Imágen del producto",
+        "mssgProdExts" => "Existencias del producto",
+        "newProd" => "Añadir nuevo producto",
+        "btnNewProd" => "Añadir"
     ],
     'en' => [
         "lang" => "ENGLISH",
@@ -52,15 +61,24 @@ define("LANGS", [
         "btnConsul" => "CONSULT",
         "mssgLabelProdCod" => "Product code",
         "search" => "Search",
-        "bdCod" => "Code",
-        "bdNomProd" => "Name",
-        "bdPrice" => "Price",
-        "bdProv" => "Vendor",
-        "bdImg" => "Picture",
-        "query" => "Query",
+        "cod" => "Code",
+        "nom_prod" => "Name",
+        "pvp" => "Price",
+        "prov" => "Vendor",
+        "imagen" => "Picture",
+        "exts" => "Stock",
+        "retrieve" => "Query",
         "new" => "New",
         "delete" => "Delete",
-        "update" => "Update"
+        "update" => "Update",
+        "filters" => "Filters",
+        "mssgProdName" => "Nombre del producto",
+        "mssgProdPrice" => "Precio del producto",
+        "mssgProdProv" => "Proveedor del producto",
+        "mssgProdImg" => "Imágen del producto",
+        "mssgProdExts" => "Existencias del producto",
+        "newProd" => "Add new product",
+        "btnNewProd" => "Add"
     ],
     'fr' => [
         "lang" => "FRANÇAIS",
@@ -82,15 +100,24 @@ define("LANGS", [
         "btnConsul" => "CONSULTER",
         "mssgLabelProdCod" => "Code produit",
         "search" => "Chercher",
-        "bdCod" => "Code",
-        "bdNomProd" => "Nom",
-        "bdPrice" => "Prix",
-        "bdProv" => "Fournisseur",
-        "bdImg" => "Photo",
-        "query" => "Mettre en doute",
+        "cod" => "Code",
+        "nom_prod" => "Nom",
+        "pvp" => "Prix",
+        "prov" => "Fournisseur",
+        "imagen" => "Photo",
+        "exts" => "Stocker",
+        "retrieve" => "Mettre en doute",
         "new" => "Nouveau",
         "delete" => "Effacer",
-        "update" => "Mettre à jour"
+        "update" => "Mettre à jour",
+        "filters" => "Filtres",
+        "mssgProdName" => "Nombre del producto",
+        "mssgProdPrice" => "Precio del producto",
+        "mssgProdProv" => "Proveedor del producto",
+        "mssgProdImg" => "Imágen del producto",
+        "mssgProdExts" => "Existencias del producto",
+        "newProd" => "Ajouter un nouveau produit",
+        "btnNewProd" => "Ajouter"
     ]
 ]);
 
@@ -102,6 +129,6 @@ define('OPS', [
     "cart" => "carrito.php"
 ]);
 
-define('CRUD', ["query", "new", "delete", "update"]);
-
-define('PRODBD', ["bdCod", "bdNomProd", "bdPrice", "bdProv", "bdImg"]);
+define('CRUD', [
+    "usr" => ["retrieve"],
+    "adm" => ["retrieve", "new", "delete", "update"]]);

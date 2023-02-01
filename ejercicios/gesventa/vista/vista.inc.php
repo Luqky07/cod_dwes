@@ -106,19 +106,22 @@ class Vista
         -Cambiar la función para que trabaje recibiendo un array y no usando métodos del
         Modelo.
     */
-    private function allProds($prods)
+    private function allProds($prods, $allFields)
     {
         $list = "<table style='border: none; width:100%;'>\n<thead>\n";
         $list .= "<tr style='padding: 0 20% 0 0;'>\n";
-        foreach (PRODBD as $v) {
+        foreach ($allFields as $v) {
             $list .= "<th>" . LANGS[$this->lang][$v] . "</th>\n";
         }
+        $list .= "<th>" . LANGS[$this->lang]["exts"] . "</th>\n";
         $list .= "</tr>\n</thead>\n<tbody>\n";
-        foreach ($prods as $v) {
+        foreach ($prods as $p) {
             $list .= "<tr style='padding: 0 20% 0 0;'>\n";
-            foreach ($v as $subV) {
-                $list .= "<td style='left:10px; padding-left: 30px;'>$subV</td>\n";
+            foreach ($p as $k => $v) {
+                if ($k == "imagen") $list .= "<td style='left:10px; padding-left: 30px;'><img src='../img/$v'></td>\n";
+                else $list .= "<td style='left:10px; padding-left: 30px;'>$v</td>\n";
             }
+            $list .= "<td style='left:10px; padding-left: 30px;'>0</td>\n";
         }
         $list .= "</tr>\n</tbody>\n</table>\n";
         return $list;
@@ -139,11 +142,13 @@ class Vista
 
     private function frontMenu()
     {
+        $roll = $_SESSION['roll'];
         $f = "<fieldset style='border: 2px solid black; height: 50%'>\n";
         $f .= "<legend>" . LANGS[$this->lang]["menu"] . ": </legend>\n";
-        $f .= "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
-        foreach (CRUD as $v) {
+        foreach (CRUD[$roll] as $v) {
+            $f .= "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
             $f .= "<input type='submit' name='$v' value='" . LANGS[$this->lang][$v] . "'>" . BR;
+            $f .= "</form>\n";
         }
         $f .= "</fieldset>\n";
         $f .= "<fieldset style='border: 2px solid black; height: 50%'>\n";
@@ -152,7 +157,7 @@ class Vista
 
     private function frontFiltro()
     {
-        $f = "<legend>" . LANGS[$this->lang]["section"] . ": </legend>\n";
+        $f = "<legend>" . LANGS[$this->lang]["filters"] . ": </legend>\n";
         //$f .= "<h1>" . LANGS[$this->lang]["filtreMssg"] . "</h1>\n";
         $f .= $this->frontFiltroCod();
         $f .= "</fieldset>\n";
@@ -169,35 +174,54 @@ class Vista
         return $f;
     }
 
-    private function frontCuerpo($prods)
+    private function frontCuerpo($prods, $allFields)
     {
         $f = "<div id='cuerpo' style='width:70%; float:left; height: 95%;'>\n";
         $f .= "<fieldset style='border: 2px solid black; height: 100%; overflow:scroll;'>\n";
         $f .= "<legend>" . LANGS[$this->lang]["section"] . ": </legend>\n";
-        $f .= $this->allProds($prods);
+        $f .= $this->allProds($prods, $allFields);
         $f .= "</fieldset>\n</div>\n";
         return $f;
     }
 
-    public function frontArticle($prods)
+    public function frontArticle($arr, $allFields)
     {
         $f = "<div style='overflow:hidden; width:100%; height: 400px'>\n";
         $f .= "<div id='tables' style='float:left; width:30%; height: 90%'>\n";
         $f .= $this->frontMenu();
         $f .= $this->frontFiltro();
         $f .= "</div>\n";
-        $f .= $this->frontCuerpo($prods);
+        if (isset($arr['new'])) $f .= $this->frontNewProd($allFields);
+        else $f .= $this->frontCuerpo($arr, $allFields);
         $f .= "</div>\n";
+        return $f;
+    }
+
+    private function frontNewProd($allFields)
+    {
+        $f = "<fieldset style='border: 2px solid black; height: 100%; overflow:scroll;'>\n";
+        $f .= "<legend>" . LANGS[$this->lang]["newProd"] . ": </legend>\n";
+        $f .= "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+        foreach ($allFields as $v) {
+            if ($v != "imagen") {
+                $f .= "<label for='$v'>" . LANGS[$this->lang][$v] . "</label>\n";
+                $f .= "<input type='text' name='$v'>" . BR;
+            }
+        }
+        $f .= "<input type='submit' name='newProd' value='" . LANGS[$this->lang]["btnNewProd"] . "'>\n";
+        $f .= "</form>\n</fieldset>\n";
         return $f;
     }
 
     public function mostrarBoton($post)
     {
         $f = "";
-        foreach($post as $k => $v) {
-            foreach(CRUD as $c) {
-                if($k == $c) {
-                    if(isset($post[$k])) $f = "<h1>Se ha pulsado el botón $v</h1>"; 
+        foreach ($post as $k => $v) {
+            foreach (CRUD as $roll) {
+                foreach ($roll as $c) {
+                    if ($k == $c) {
+                        if (isset($post[$k])) $f = "<h3>Se ha pulsado el botón $v</h3>";
+                    }
                 }
             }
         }

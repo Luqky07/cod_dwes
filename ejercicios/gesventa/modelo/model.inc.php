@@ -27,4 +27,9 @@ class Modelo
         }
         return $mssg;
     }
+
+    function roll() {
+        if($_SESSION['user'] == "Ana") $_SESSION["roll"] = "adm";
+        else $_SESSION["roll"] = "usr";
+    }
 }
