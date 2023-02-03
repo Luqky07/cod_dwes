@@ -27,19 +27,16 @@ define("LANGS", [
         "pvp" => "Precio",
         "prov" => "Proveedor",
         "imagen" => "Imágen",
-        "exts" => "Existencias",
+        "existencias" => "Existencias",
         "retrieve" => "Consulta",
         "new" => "Nuevo",
         "delete" => "Borrar",
         "update" => "Actualizar",
         "filters" => "Filtros",
-        "mssgProdName" => "Nombre del producto",
-        "mssgProdPrice" => "Precio del producto",
-        "mssgProdProv" => "Proveedor del producto",
-        "mssgProdImg" => "Imágen del producto",
-        "mssgProdExts" => "Existencias del producto",
         "newProd" => "Añadir nuevo producto",
-        "btnNewProd" => "Añadir"
+        "btnNewProd" => "Añadir",
+        "noProd" => "No se han encontrado productos",
+        "noFilter" => "Quitar filtros"
     ],
     'en' => [
         "lang" => "ENGLISH",
@@ -66,19 +63,16 @@ define("LANGS", [
         "pvp" => "Price",
         "prov" => "Vendor",
         "imagen" => "Picture",
-        "exts" => "Stock",
+        "existencias" => "Stock",
         "retrieve" => "Query",
         "new" => "New",
         "delete" => "Delete",
         "update" => "Update",
         "filters" => "Filters",
-        "mssgProdName" => "Nombre del producto",
-        "mssgProdPrice" => "Precio del producto",
-        "mssgProdProv" => "Proveedor del producto",
-        "mssgProdImg" => "Imágen del producto",
-        "mssgProdExts" => "Existencias del producto",
         "newProd" => "Add new product",
-        "btnNewProd" => "Add"
+        "btnNewProd" => "Add",
+        "noProd" => "No products found",
+        "noFilter" => "Remove filters"
     ],
     'fr' => [
         "lang" => "FRANÇAIS",
@@ -105,19 +99,51 @@ define("LANGS", [
         "pvp" => "Prix",
         "prov" => "Fournisseur",
         "imagen" => "Photo",
-        "exts" => "Stocker",
+        "existencias" => "Stocker",
         "retrieve" => "Mettre en doute",
         "new" => "Nouveau",
         "delete" => "Effacer",
         "update" => "Mettre à jour",
         "filters" => "Filtres",
-        "mssgProdName" => "Nombre del producto",
-        "mssgProdPrice" => "Precio del producto",
-        "mssgProdProv" => "Proveedor del producto",
-        "mssgProdImg" => "Imágen del producto",
-        "mssgProdExts" => "Existencias del producto",
         "newProd" => "Ajouter un nouveau produit",
-        "btnNewProd" => "Ajouter"
+        "btnNewProd" => "Ajouter",
+        "noProd" => "Aucun produit trouvé",
+        "noFilter" => "Supprimer les filtres"
+    ],
+    'dc' => [
+        "lang" => "DEUTSCH",
+        "welcome" => "WILLKOMMEN ZU",
+        "login" => "ANMELDUNG",
+        "register" => "EINCHECKEN",
+        "logout" => "HINAUSGEHEN",
+        "index" => "ANFANG",
+        "cart" => "WAGEN",
+        "nodata" => "Bitte gib deinen Benutzernamen und dein Passwort ein",
+        "fail" => "Benutzer- oder Passwortfehler",
+        "user" => "Benutzer",
+        "pass" => "Passwort",
+        "idiom" => "Idiom",
+        "initMssg" => "Eingabeformular",
+        "menu" => "Speisekarte",
+        "section" => "Abschnitt",
+        "filtreMssg" => "Dies ist ein Filterabschnitt",
+        "mssgLabelProdCod" => "Produktcode",
+        "search" => "Suche",
+        "cod" => "Code",
+        "nom_prod" => "Name",
+        "pvp" => "Preis",
+        "prov" => "Anbieter",
+        "imagen" => "Bild",
+        "existencias" => "Lager",
+        "retrieve" => "Anfrage",
+        "new" => "Neu",
+        "delete" => "Löschen",
+        "update" => "Aktualisieren",
+        "filters" => "Filter",
+        "newProd" => "Neues Produkt hinzufügen",
+        "btnNewProd" => "Hinzufügen",
+        "noProd" => "Keine Produkte gefunden",
+        "noFilter" => "Filter entfernen"
     ]
 ]);
 
@@ -131,4 +157,5 @@ define('OPS', [
 
 define('CRUD', [
     "usr" => ["retrieve"],
-    "adm" => ["retrieve", "new", "delete", "update"]]);
+    "adm" => ["retrieve", "new", "delete", "update"]
+]);

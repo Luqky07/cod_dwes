@@ -22,24 +22,26 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     if (isset($_POST['idiom'])) $v->setLang($_POST["lang"]);
     else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
 
-    if(isset($_POST["newProd"])) {
+    if (isset($_POST["newProd"])) {
+    }
 
-    }
-    
     $allFields = $p->allFields("productos");
-    
-    if(isset($_POST['search'])) {
-        ($p->filter($_POST));
+
+    if (isset($_POST['search'])) {
+        $prods = $p->filter($_POST);
+    } else if (isset($_POST['noFilter'])) {
         $prods = $p->getAll();
-    }
-    else $prods = $p->getAll();
+    } else $prods = $p->getAll();
+
+    if(isset($_POST["retrieve"]) || isset($_POST["search"])) $retrieve = true;
+    else $retrieve = false;
 
     $_SESSION["lang"] = $v->getLang();
 
     echo $v->cabecera();
 
-    if(isset($_POST['new'])) echo $v->frontArticle($_POST, $allFields);
-    else echo $v->frontArticle($prods, $allFields);
+    if (isset($_POST['new'])) echo $v->frontArticle($_POST, $allFields, $retrieve);
+    else echo $v->frontArticle($prods, $allFields, $retrieve);
     ?>
 </body>
 

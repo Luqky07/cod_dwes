@@ -19,11 +19,13 @@ class ProductoDAO
             //Consulta SIN PREPARAR
             $q = "SELECT * FROM PRODUCTOS";
             $prods = $bd->query($q);
-            return $prods->fetchAll(PDO::FETCH_ASSOC);
-            $dbh->close();
+            $allProds =  $prods->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             return NULL;
+        } finally {
+            $dbh->close();
         }
+        return $allProds;
     }
 
     public function get($key)
@@ -34,7 +36,7 @@ class ProductoDAO
             2. DEVULVE el Producto asociado a ese campo COD.
         */
         $mssg = null;
-        if(!isset($key)) $mssg = "fail";
+        if (!isset($key)) $mssg = "fail";
         try {
             $dbh = new Conn();
             $bd = $dbh->getConn(); //referencia a la BD
@@ -47,11 +49,12 @@ class ProductoDAO
         } finally {
             $dbh->close();
         }
-       if (isset($mssg)) return $mssg;
-       else return $res;
+        if (isset($mssg)) return $mssg;
+        else return $res;
     }
 
-    public function allFields($table) {
+    public function allFields($table)
+    {
         $mssg = [];
         try {
             $dbh = new Conn();
@@ -60,32 +63,49 @@ class ProductoDAO
             $q = "DESCRIBE $table";
             $prods = $bd->query($q);
             $mssg = $prods->fetchAll(PDO::FETCH_ASSOC);
-            $dbh->close();
         } catch (PDOException $e) {
             return NULL;
+        } finally {
+            $dbh->close();
         }
         $res = [];
-        foreach($mssg as $v) {
-            $res[] = $v["Field"];
+        foreach ($mssg as $v) {
+            $type = explode("(", $v["Type"]);
+            $res[$v["Field"]] = $type[0];
         }
         return $res;
     }
-    public function filter($datos){
+    public function filter($datos)
+    {
         try {
             $dbh = new Conn();
             $bd = $dbh->getConn();
 
             //Consulta SIN PREPARAR
             $q = "SELECT * FROM PRODUCTOS WHERE";
-            foreach($this->allFields("productos") as $v){
-                var_dump($v);
-                $q .= " $v =" . $datos["filter_$v"];
+            $allFields = $this->allFields("productos");
+            $firstOpt = true;
+            foreach ($allFields as $k => $v) {
+                if (!empty($datos["filter_" . $k]) && $k != "imagen") {
+                    if ($firstOpt) {
+                        $q .= " $k = :$k";
+                        $firstOpt = false;
+                    } else $q .= " AND $k = :$k";
+                }
             }
-            $prods = $bd->query($q);
-            return $prods->fetchAll(PDO::FETCH_ASSOC);
-            $dbh->close();
+            foreach ($allFields as $k => $v) {
+                if (!empty($datos["filter_" . $k]) && $k != "imagen") {
+                    $values[":" . $k] = $datos["filter_" . $k];
+                }
+            }
+            $stmt = $bd->prepare($q);
+            $stmt->execute($values);
+            $filterProds = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             return NULL;
+        } finally {
+            $dbh->close();
         }
+        return $filterProds;
     }
 }

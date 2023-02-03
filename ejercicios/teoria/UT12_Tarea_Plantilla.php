@@ -53,7 +53,7 @@
 						// Función para comprobar si un nombre existe en el array
 						function findPos($miArray,$dato){
 							
-								$posicion=array_search($miTfno,$dato,false);
+								$posicion=array_search($miArray,$dato,false);
 								return $posicion;
 						}
 				?>
