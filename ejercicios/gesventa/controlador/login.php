@@ -24,7 +24,7 @@ if (isset($_POST['enviar'])) { //Se ha pulsado el botón alguna vez
     $error = $m->validar($_POST);
     //Si hay datos, $mensaje="" y pasamos a poner las variables de sesión
     if ($error == "") {
-        $_SESSION['user'] = ucfirst($_POST['user']);
+        $_SESSION['user'] = ucfirst(strtolower($_POST['user']));
         $m->roll();
         header('Location: front.php');
     } else echo LANGS[$v->getLang()][$error] . BR;

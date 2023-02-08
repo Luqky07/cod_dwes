@@ -1,5 +1,5 @@
 <?php
-define("BR", "<br>\n");
+define("BR", "\n<br>\n");
 define("TTL", "GESVENTAS APP");
 
 define("LANGS", [
@@ -36,7 +36,8 @@ define("LANGS", [
         "newProd" => "Añadir nuevo producto",
         "btnNewProd" => "Añadir",
         "noProd" => "No se han encontrado productos",
-        "noFilter" => "Quitar filtros"
+        "noFilter" => "Quitar filtros",
+        "prods" => "Productos"
     ],
     'en' => [
         "lang" => "ENGLISH",
@@ -72,7 +73,8 @@ define("LANGS", [
         "newProd" => "Add new product",
         "btnNewProd" => "Add",
         "noProd" => "No products found",
-        "noFilter" => "Remove filters"
+        "noFilter" => "Remove filters",
+        "prods" => "Products"
     ],
     'fr' => [
         "lang" => "FRANÇAIS",
@@ -108,7 +110,8 @@ define("LANGS", [
         "newProd" => "Ajouter un nouveau produit",
         "btnNewProd" => "Ajouter",
         "noProd" => "Aucun produit trouvé",
-        "noFilter" => "Supprimer les filtres"
+        "noFilter" => "Supprimer les filtres",
+        "prods" => "Produits"
     ],
     'dc' => [
         "lang" => "DEUTSCH",
@@ -143,7 +146,8 @@ define("LANGS", [
         "newProd" => "Neues Produkt hinzufügen",
         "btnNewProd" => "Hinzufügen",
         "noProd" => "Keine Produkte gefunden",
-        "noFilter" => "Filter entfernen"
+        "noFilter" => "Filter entfernen",
+        "prods" => "Produkte"
     ]
 ]);
 

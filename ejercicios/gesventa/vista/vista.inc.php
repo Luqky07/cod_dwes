@@ -112,7 +112,7 @@ class Vista
         else {
             $list = "<table style='border: none; width:100%;'>\n<thead>\n";
             $list .= "<tr style='padding: 0 20% 0 0;'>\n";
-            foreach ($allFields as $k => $v) {
+            foreach ($allFields as $k) {
                 $list .= "<th>" . LANGS[$this->lang][$k] . "</th>\n";
             }
             $list .= "</tr>\n</thead>\n<tbody>\n";
@@ -156,10 +156,10 @@ class Vista
         return $f;
     }
 
-    public function frontFiltro($allFields, $retrieve)
+    public function frontSeccion($allFields, $seccion, $provs)
     {
-        $f = "<legend>" . LANGS[$this->lang]["filters"] . ": </legend>\n";
-        if ($retrieve) {
+        if ($seccion == "filter") {
+            $f = "<legend>" . LANGS[$this->lang]["filters"] . ": </legend>\n";
             $f .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>\n";
             foreach ($allFields as $k => $v) {
                 if ($k != "imagen") {
@@ -178,7 +178,13 @@ class Vista
             }
             $f .= "<input type='submit' name='search' value= '" . LANGS[$this->lang]["search"] . "'>\n";
             $f .= "</form>\n";
-        } else $f .= "<h3>" . LANGS[$this->lang]["filtreMssg"] . "</h3>\n";
+        } else if($seccion == "new"){
+            $f = "<legend>" . LANGS[$this->lang]["newProd"] . ": </legend>\n";
+            $f .= $this -> frontNewProd($allFields, $provs);
+        } else{
+            $f = "<legend>" . LANGS[$this->lang]["section"] . ": </legend>\n";
+            $f .= "<h3>" . LANGS[$this->lang]["filtreMssg"] . "</h3>\n";
+        }
         $f .= "</fieldset>\n";
         return $f;
     }
@@ -187,43 +193,42 @@ class Vista
     {
         $f = "<div id='cuerpo' style='width:70%; float:left; height: 95%;'>\n";
         $f .= "<fieldset style='border: 2px solid black; height: 100%; overflow:scroll;'>\n";
-        $f .= "<legend>" . LANGS[$this->lang]["section"] . ": </legend>\n";
-        $f .= $this->allProds($prods, $allFields);
+        $f .= "<legend>" . LANGS[$this->lang]["prods"] . ": </legend>\n";
+        $f .= $this->allProds($prods, array_keys($allFields));
         $f .= "</fieldset>\n</div>\n";
         return $f;
     }
 
-    public function frontArticle($arr, $allFields, $retrieve, $provs)
+    public function frontArticle($prods, $allFields, $seccion, $provs)
     {
         $f = "<div style='overflow:hidden; width:100%; height: 380px'>\n";
         $f .= "<div id='tables' style='float:left; width:30%; height: 89.7%'>\n";
         $f .= $this->frontMenu();
-        $f .= $this->frontFiltro($allFields, $retrieve);
+        $f .= $this->frontSeccion($allFields, $seccion, $provs);
         $f .= "</div>\n";
-        if (isset($arr['new'])) $f .= $this->frontNewProd($allFields, $provs);
-        else $f .= $this->frontCuerpo($arr, $allFields);
+        $f .= $this->frontCuerpo($prods, $allFields);
         $f .= "</div>\n";
         return $f;
     }
 
     public function frontNewProd($allFields, $provs)
     {
-        $f = "<fieldset style='border: 2px solid black; height: 95%; overflow:scroll;'>\n";
-        $f .= "<legend>" . LANGS[$this->lang]["newProd"] . ": </legend>\n";
-        $f .= "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+        $f = "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
         foreach ($allFields as $k => $v) {
             if ($k == "prov") {
                 $f .= "<label for='new_$k'>" . LANGS[$this->lang][$k] . "</label>\n";
-                $f .= "<select>";
+                $f .= "<select name='new_$k'>\n";
                 foreach($provs as $prov){
-                    $f .= "<option value=>";
+                    $f .= "<option value='". $prov["cif"] ."'>". $prov["cif"] ."</option>\n";
                 }
-                $f .= "</select>";
-            } else {
+                $f .= "</select>".BR;
+            } else if($k == "cod") {
+                $f .= "<input type='hidden' name='new_$k' value='" . $_SESSION["last"] + 1 . "'>\n";
+            }else {
                 if ($k != "imagen") {
                     $f .= "<label for='new_$k'>" . LANGS[$this->lang][$k] . "</label>\n";
                     if ($v == "varchar") {
-                        $f .= "<input type='text' name = 'new_$k'>" . BR;
+                        $f .= "<input type='text' name = 'new_$k' required>" . BR;
                     } else if ($v == "int") {
                         $f .= "<input type='number' name = 'new_$k'>" . BR;
                     } else if ($v == "decimal") {
@@ -233,7 +238,7 @@ class Vista
             }
         }
         $f .= "<input type='submit' name='newProd' value='" . LANGS[$this->lang]["btnNewProd"] . "'>\n";
-        $f .= "</form>\n</fieldset>\n";
+        $f .= "</form>\n";
         return $f;
     }
 

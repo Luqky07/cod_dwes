@@ -19,11 +19,14 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     $v = new Vista();
     $p = new ProductoDAO();
 
+    $_SESSION["last"] = $p -> lastCod();
+
     if (isset($_POST['idiom'])) $v->setLang($_POST["lang"]);
     else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
 
-    if (isset($_POST["newProd"])) {
-        echo $p -> insert($_POST);
+    if (isset($_POST["newProd"])){
+        $p -> insert($_POST);
+        header("Location: front.php");
     }
 
     $allFields = $p->allFields("productos");
@@ -34,18 +37,17 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
         $prods = $p->getAll();
     } else $prods = $p->getAll();
 
-    if(isset($_POST["retrieve"]) || isset($_POST["search"])) $retrieve = true;
-    else $retrieve = false;
+    if(isset($_POST["retrieve"]) || isset($_POST["search"])) $seccion = "filter";
+    else if(isset($_POST["new"])) $seccion = "new";
+    else $seccion = false;
 
     $_SESSION["lang"] = $v->getLang();
 
     echo $v->cabecera();
 
     $provs = $p -> getAllProvs();
-    var_dump($provs);
-
-    if (isset($_POST['new'])) echo $v->frontArticle($_POST, $allFields, $retrieve, $provs);
-    else echo $v->frontArticle($prods, $allFields, $retrieve, $provs);
+    
+    echo $v->frontArticle($prods, $allFields, $seccion, $provs);
     ?>
 </body>
 

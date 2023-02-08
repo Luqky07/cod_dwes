@@ -86,7 +86,7 @@ class ProductoDAO
             $allFields = $this->allFields("productos");
             $firstOpt = true;
             $allEmpty = true;
-            foreach ($allFields as $k => $v) {
+            foreach (array_keys($allFields) as $k) {
                 if (!empty($datos["filter_" . $k]) && $k != "imagen") {
                     $allEmpty = false;
                     if($k == "pvp" || $k == "existencias"){
@@ -108,7 +108,7 @@ class ProductoDAO
                 }
             }
             $values = [];
-            foreach ($allFields as $k => $v) {
+            foreach (array_keys($allFields) as $k) {
                 if (!empty($datos["filter_" . $k]) && $k != "imagen") {
                     if($k == "nom_prod" || $k == "prov") $values[":" . $k] = "%" . $datos["filter_" . $k] . "%";
                     else $values[":" . $k] = $datos["filter_" . $k];
@@ -145,7 +145,7 @@ class ProductoDAO
             }
             $q .= ") values (";
             $firstOpt = true;
-            foreach ($allFields as $k => $v) {
+            foreach (array_keys($allFields) as $k) {
                 if (!empty($datos["new_" . $k]) && $k != "imagen") {
                     if($firstOpt){
                         $q .= "'" .  $datos["new_" . $k] . "'";
@@ -154,7 +154,6 @@ class ProductoDAO
                 }
             }
             $q .= ")";
-            echo $q . BR;
             $bd->query($q);
             return "insert_valid";
         } catch (PDOException $e) {
@@ -178,5 +177,20 @@ class ProductoDAO
             $dbh->close();
         }
         return $allProvs;
+    }
+
+    public function lastCod() {
+        try {
+            $dbh = new Conn();
+            $bd = $dbh->getConn();
+            $q = "SELECT MAX(cod) last FROM PRODUCTOS";
+            $cods = $bd->query($q);
+            $maxCod =  $cods->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return NULL;
+        } finally {
+            $dbh->close();
+        }
+        return $maxCod[0]["last"];
     }
 }
