@@ -75,7 +75,7 @@ class ProductoDAO
         }
         return $res;
     }
-    public function filter($datos)
+    public function getFilter($datos)
     {
         try {
             $dbh = new Conn();
@@ -85,27 +85,98 @@ class ProductoDAO
             $q = "SELECT * FROM PRODUCTOS WHERE";
             $allFields = $this->allFields("productos");
             $firstOpt = true;
+            $allEmpty = true;
             foreach ($allFields as $k => $v) {
                 if (!empty($datos["filter_" . $k]) && $k != "imagen") {
-                    if ($firstOpt) {
-                        $q .= " $k = :$k";
-                        $firstOpt = false;
-                    } else $q .= " AND $k = :$k";
+                    $allEmpty = false;
+                    if($k == "pvp" || $k == "existencias"){
+                        if ($firstOpt) {
+                            $q .= " $k >= :$k";
+                            $firstOpt = false;
+                        } else $q .= " AND $k = :$k";
+                    } else if($k == "nom_prod" || $k == "prov") {
+                        if ($firstOpt) {
+                            $q .= " $k LIKE :$k";
+                            $firstOpt = false;
+                        } else $q .= " AND $k = :$k";
+                    } else {
+                        if ($firstOpt) {
+                            $q .= " $k = :$k";
+                            $firstOpt = false;
+                        } else $q .= " AND $k = :$k";
+                    }
                 }
             }
+            $values = [];
             foreach ($allFields as $k => $v) {
                 if (!empty($datos["filter_" . $k]) && $k != "imagen") {
-                    $values[":" . $k] = $datos["filter_" . $k];
+                    if($k == "nom_prod" || $k == "prov") $values[":" . $k] = "%" . $datos["filter_" . $k] . "%";
+                    else $values[":" . $k] = $datos["filter_" . $k];
                 }
             }
             $stmt = $bd->prepare($q);
             $stmt->execute($values);
             $filterProds = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            return NULL;
+            if($allEmpty == true) return $this->getAll();
+            else return NULL;
         } finally {
             $dbh->close();
         }
         return $filterProds;
+    }
+
+    public function insert($datos) {
+        try {
+            $dbh = new Conn();
+            $bd = $dbh->getConn();
+
+            //Consulta SIN PREPARAR
+            $allFields = $this->allFields("productos");
+            $q = "INSERT INTO PRODUCTOS (";
+            $firstOpt = true;
+            foreach ($allFields as $k => $v) {
+                if (!empty($datos["new_" . $k]) && $k != "imagen") {
+                    if($firstOpt){
+                        $q .= $k;
+                        $firstOpt = false;
+                    } else $q .= ", " . $k;
+                }
+            }
+            $q .= ") values (";
+            $firstOpt = true;
+            foreach ($allFields as $k => $v) {
+                if (!empty($datos["new_" . $k]) && $k != "imagen") {
+                    if($firstOpt){
+                        $q .= "'" .  $datos["new_" . $k] . "'";
+                        $firstOpt = false;
+                    } else $q .= ", '" . $datos["new_" . $k] . "'";
+                }
+            }
+            $q .= ")";
+            echo $q . BR;
+            $bd->query($q);
+            return "insert_valid";
+        } catch (PDOException $e) {
+            echo $e . BR;
+            return "insert_Fail";
+        } finally {
+            $dbh->close();
+        }
+    }
+
+    public function getAllProvs() {
+        try {
+            $dbh = new Conn();
+            $bd = $dbh->getConn();
+            $q = "SELECT cif FROM PROVEEDORES";
+            $provs = $bd->query($q);
+            $allProvs =  $provs->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return NULL;
+        } finally {
+            $dbh->close();
+        }
+        return $allProvs;
     }
 }
