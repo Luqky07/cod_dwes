@@ -19,8 +19,6 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     $v = new Vista();
     $p = new ProductoDAO();
 
-    $_SESSION["last"] = $p -> lastCod();
-
     if (isset($_POST['idiom'])) $v->setLang($_POST["lang"]);
     else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
 
@@ -36,10 +34,24 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     } else if (isset($_POST['noFilter'])) {
         $prods = $p->getAll();
     } else $prods = $p->getAll();
+    if(isset($_POST["addProduct"])) {
+        $info = explode("_",$_POST['num_prods']);
+        if(isset($_COOKIE[$_SESSION["user"]])){
+            $cart = unserialize($_COOKIE[$_SESSION["user"]]);
+            if(isset($cart["cart"][$info[0]])) $cart["cart"][$info[0]] += $info[1];
+            else $cart["cart"][$info[0]] = $info[1];
+            setcookie($_SESSION["user"], serialize($cart), time() + (86400 * 30), "/");
+        }
+        else{
+            $cart["cart"][$info[0]] = (int) $info[1];
+            setcookie($_SESSION["user"], serialize($cart), time() + (86400 * 30), "/");
+        }
+        header("Location: front.php");
+    }
 
     if(isset($_POST["retrieve"]) || isset($_POST["search"])) $seccion = "filter";
     else if(isset($_POST["new"])) $seccion = "new";
-    else $seccion = false;
+    else $seccion = null;
 
     $_SESSION["lang"] = $v->getLang();
 

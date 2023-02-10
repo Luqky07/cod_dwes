@@ -15,7 +15,8 @@ else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
 if (isset($_SESSION['user'])) {
     //Si vuelvo desde una página con sesión, la elimino
     unset($_SESSION['user']);
-    //session_destroy();
+    /* $_SESSION = [];
+    session_destroy(); */
 }
 
 $_SESSION["lang"] = $v->getLang();

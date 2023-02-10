@@ -37,7 +37,9 @@ define("LANGS", [
         "btnNewProd" => "Añadir",
         "noProd" => "No se han encontrado productos",
         "noFilter" => "Quitar filtros",
-        "prods" => "Productos"
+        "prods" => "Productos",
+        "add" => "Añadir",
+        "notAvailable" => "Producto no disponible"
     ],
     'en' => [
         "lang" => "ENGLISH",
@@ -74,7 +76,9 @@ define("LANGS", [
         "btnNewProd" => "Add",
         "noProd" => "No products found",
         "noFilter" => "Remove filters",
-        "prods" => "Products"
+        "prods" => "Products",
+        "add" => "Add",
+        "notAvailable" => "Product not avilable"
     ],
     'fr' => [
         "lang" => "FRANÇAIS",
@@ -111,7 +115,9 @@ define("LANGS", [
         "btnNewProd" => "Ajouter",
         "noProd" => "Aucun produit trouvé",
         "noFilter" => "Supprimer les filtres",
-        "prods" => "Produits"
+        "prods" => "Produits",
+        "add" => "Ajouter",
+        "notAvailable" => "Produit non disponible"
     ],
     'dc' => [
         "lang" => "DEUTSCH",
@@ -147,7 +153,9 @@ define("LANGS", [
         "btnNewProd" => "Hinzufügen",
         "noProd" => "Keine Produkte gefunden",
         "noFilter" => "Filter entfernen",
-        "prods" => "Produkte"
+        "prods" => "Produkte",
+        "add" => "Hinzufügen",
+        "notAvailable" => "Produkt nicht verfügbar"
     ]
 ]);
 
@@ -155,7 +163,7 @@ define('OPS', [
     //"login" => "login.php",
     // "register" => "registro.php",
     "logout" => "login.php",
-    "index" => "index.php",
+    "index" => "front.php",
     "cart" => "carrito.php"
 ]);
 

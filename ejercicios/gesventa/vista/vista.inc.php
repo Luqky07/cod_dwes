@@ -120,12 +120,41 @@ class Vista
                 $list .= "<tr style='padding: 0 20% 0 0;'>\n";
                 foreach ($p as $k => $v) {
                     if ($k == "imagen") $list .= "<td style='left:10px; padding-left: 30px;'><img src='../img/$v'></td>\n";
+                    else if ($k == "existencias") $list .= $this->frontFormBuy($p);
                     else $list .= "<td style='left:10px; padding-left: 30px;'>$v</td>\n";
                 }
             }
             $list .= "</tr>\n</tbody>\n</table>\n";
             return $list;
         }
+    }
+
+    public function frontFormBuy($p)
+    {
+        $form = "<td style='left:10px; padding-left: 30px;'>\n";
+        if ($p["existencias"] == 0) {
+            $form .= "<strong>" . LANGS[$this->lang]["notAvailable"] . "</strong>\n";
+        } else if ($p["existencias"] > 5) {
+            $form .= "<form method = 'POST' action = '" . $_SERVER['PHP_SELF'] . "'>\n";
+            $form .= "<select name='num_prods'>\n";
+            for ($i = 1; $i <= 5; $i++) {
+                $form .= "<option value = '" . $p["cod"] . "_$i" . "'>$i</option>\n";
+            }
+            $form .= "</select>\n";
+            $form .= "<input type='submit' name='addProduct' value='" . LANGS[$this->lang]["add"] . "'>\n";
+            $form .= "</form>\n";
+        } else {
+            $form .= "<form method = 'POST' action = '" . $_SERVER['PHP_SELF'] . "'>\n";
+            $form .= "<select name='num_prods'>\n";
+            for ($i = 1; $i <= $p["existencias"]; $i++) {
+                $form .= "<option value = '" . $p["cod"] . "_$i" . "'>$i</option>\n";
+            }
+            $form .= "</select>\n";
+            $form .= "<input type='submit' name='addProduct' value='" . LANGS[$this->lang]["add"] . "'>\n";
+            $form .= "</form>\n";
+        }
+        $form .= "</td>\n";
+        return $form;
     }
 
     public function formLogin()
@@ -178,10 +207,10 @@ class Vista
             }
             $f .= "<input type='submit' name='search' value= '" . LANGS[$this->lang]["search"] . "'>\n";
             $f .= "</form>\n";
-        } else if($seccion == "new"){
+        } else if ($seccion == "new") {
             $f = "<legend>" . LANGS[$this->lang]["newProd"] . ": </legend>\n";
-            $f .= $this -> frontNewProd($allFields, $provs);
-        } else{
+            $f .= $this->frontNewProd($allFields, $provs);
+        } else {
             $f = "<legend>" . LANGS[$this->lang]["section"] . ": </legend>\n";
             $f .= "<h3>" . LANGS[$this->lang]["filtreMssg"] . "</h3>\n";
         }
@@ -218,14 +247,12 @@ class Vista
             if ($k == "prov") {
                 $f .= "<label for='new_$k'>" . LANGS[$this->lang][$k] . "</label>\n";
                 $f .= "<select name='new_$k'>\n";
-                foreach($provs as $prov){
-                    $f .= "<option value='". $prov["cif"] ."'>". $prov["cif"] ."</option>\n";
+                foreach ($provs as $prov) {
+                    $f .= "<option value='" . $prov["cif"] . "'>" . $prov["cif"] . "</option>\n";
                 }
-                $f .= "</select>".BR;
-            } else if($k == "cod") {
-                $f .= "<input type='hidden' name='new_$k' value='" . $_SESSION["last"] + 1 . "'>\n";
-            }else {
-                if ($k != "imagen") {
+                $f .= "</select>" . BR;
+            } else {
+                if ($k != "imagen" && $k != "cod") {
                     $f .= "<label for='new_$k'>" . LANGS[$this->lang][$k] . "</label>\n";
                     if ($v == "varchar") {
                         $f .= "<input type='text' name = 'new_$k' required>" . BR;

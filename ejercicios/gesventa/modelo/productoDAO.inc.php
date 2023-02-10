@@ -133,25 +133,13 @@ class ProductoDAO
 
             //Consulta SIN PREPARAR
             $allFields = $this->allFields("productos");
-            $q = "INSERT INTO PRODUCTOS (";
-            $firstOpt = true;
+            $q = "INSERT INTO PRODUCTOS (cod";
             foreach ($allFields as $k => $v) {
-                if (!empty($datos["new_" . $k]) && $k != "imagen") {
-                    if($firstOpt){
-                        $q .= $k;
-                        $firstOpt = false;
-                    } else $q .= ", " . $k;
-                }
+                if (!empty($datos["new_" . $k]) && $k != "imagen") $q .= ", " . $k;
             }
-            $q .= ") values (";
-            $firstOpt = true;
+            $q .= ") values (" . $this->lastCod() + 1;
             foreach (array_keys($allFields) as $k) {
-                if (!empty($datos["new_" . $k]) && $k != "imagen") {
-                    if($firstOpt){
-                        $q .= "'" .  $datos["new_" . $k] . "'";
-                        $firstOpt = false;
-                    } else $q .= ", '" . $datos["new_" . $k] . "'";
-                }
+                if (!empty($datos["new_" . $k]) && $k != "imagen") $q .= ", '" . $datos["new_" . $k] . "'";
             }
             $q .= ")";
             $bd->query($q);
