@@ -50,9 +50,38 @@ class ProductoDAO
             $dbh->close();
         }
         if (isset($mssg)) return $mssg;
-        else return $res;
+        else return $res[0];
     }
 
+    public function gets($keys) {
+        if (!isset($keys)) $mssg = "fail";
+        try {
+            $dbh = new Conn();
+            $bd = $dbh->getConn(); //referencia a la BD
+            $q = "SELECT cod, nom_prod, pvp, prov, imagen FROM PRODUCTOS WHERE COD IN (";
+            $values = [];
+            foreach($keys as $v) {
+                $q .= ":$v, ";
+                $values[":$v"] = $v;
+            }
+            $q = substr($q, 0, -2);
+            $q .= ")";
+            $stmt = $bd->prepare($q);
+            $stmt->execute($values);
+            $filterProds = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $mssg = "fail";
+        } finally {
+            $dbh->close();
+        }
+        if (isset($mssg)) return $mssg;
+        else return $filterProds;
+    }
+
+/* 
+Cambiar allFields a modelo porque productoDAO solo deberías interactuar con cosas de los
+productos 
+*/
     public function allFields($table)
     {
         $mssg = [];
@@ -84,29 +113,20 @@ class ProductoDAO
             //Consulta SIN PREPARAR
             $q = "SELECT * FROM PRODUCTOS WHERE";
             $allFields = $this->allFields("productos");
-            $firstOpt = true;
             $allEmpty = true;
             foreach (array_keys($allFields) as $k) {
                 if (!empty($datos["filter_" . $k]) && $k != "imagen") {
                     $allEmpty = false;
                     if($k == "pvp" || $k == "existencias"){
-                        if ($firstOpt) {
-                            $q .= " $k >= :$k";
-                            $firstOpt = false;
-                        } else $q .= " AND $k = :$k";
+                        $q .= " $k >= :$k AND";
                     } else if($k == "nom_prod" || $k == "prov") {
-                        if ($firstOpt) {
-                            $q .= " $k LIKE :$k";
-                            $firstOpt = false;
-                        } else $q .= " AND $k = :$k";
+                        $q .= " $k LIKE :$k AND";
                     } else {
-                        if ($firstOpt) {
-                            $q .= " $k = :$k";
-                            $firstOpt = false;
-                        } else $q .= " AND $k = :$k";
+                        $q .= " $k = :$k AND";
                     }
                 }
             }
+            $q = substr($q, 0, -3);
             $values = [];
             foreach (array_keys($allFields) as $k) {
                 if (!empty($datos["filter_" . $k]) && $k != "imagen") {
@@ -151,7 +171,10 @@ class ProductoDAO
             $dbh->close();
         }
     }
-
+/* 
+Cambiar getAllProvs a modelo porque productoDAO solo deberías interactuar con cosas de los
+productos 
+*/
     public function getAllProvs() {
         try {
             $dbh = new Conn();

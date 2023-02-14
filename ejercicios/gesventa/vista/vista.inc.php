@@ -106,7 +106,7 @@ class Vista
         -Cambiar la función para que trabaje recibiendo un array y no usando métodos del
         Modelo.
     */
-    private function allProds($prods, $allFields)
+    public function allProds($prods, $allFields)
     {
         if (empty($prods)) return "<h1 style='text-align:center;'>" . LANGS[$this->lang]["noProd"] . "</h1>\n";
         else {

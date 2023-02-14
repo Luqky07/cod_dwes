@@ -39,7 +39,7 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
         if(isset($_COOKIE[$_SESSION["user"]])){
             $cart = unserialize($_COOKIE[$_SESSION["user"]]);
             if(isset($cart["cart"][$info[0]])) $cart["cart"][$info[0]] += $info[1];
-            else $cart["cart"][$info[0]] = $info[1];
+            else $cart["cart"][$info[0]] = (int) $info[1];
             setcookie($_SESSION["user"], serialize($cart), time() + (86400 * 30), "/");
         }
         else{

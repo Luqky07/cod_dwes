@@ -21,12 +21,11 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     $_SESSION["lang"] = $v->getLang();
 
     echo $v->cabecera();
+
     $cart = unserialize($_COOKIE[$_SESSION["user"]]);
-    foreach($cart["cart"] as $k => $v){
-        $prods[] = $p->get($k)[0];
-        echo $k . " = " . $v . "<br>";
-    }
-    var_dump($prods);
+    $prods = $p->gets($cart["cart"]);
+    $allFields = array_keys($p->allFields("productos"));
+    echo $v -> allProds($prods, $allFields);
     ?>
 </body>
 </html>
