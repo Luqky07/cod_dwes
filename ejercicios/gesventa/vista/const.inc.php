@@ -168,6 +168,6 @@ define('OPS', [
 ]);
 
 define('CRUD', [
-    "usr" => ["retrieve"],
+    "cli" => ["retrieve"],
     "adm" => ["retrieve", "new", "delete", "update"]
 ]);

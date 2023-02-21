@@ -1,60 +1,36 @@
 <?php
+//Importación de archivos necesarios
 require_once("const.inc.php");
 require_once("../modelo/productoDAO.inc.php");
+
+//Clase para gestionar todas la funciones que permiten dar estilo a datos en la página
 class Vista
 {
+    //Atributo que representa el idioma de la clase Vista
     private $lang;
+
+    //Constructor de la clase vista
     public function __construct()
     {
         $this->lang = array_keys(LANGS)[0];
     }
 
+    //Devuelve el idioma del objeto Vista 
     public function getLang()
     {
         return $this->lang;
     }
 
+    //Permite cambiar el idioma del objeto Vista
     public function setLang($lang)
     {
         $this->lang = $lang;
     }
 
-    function tabla($t)
-    {
-        echo ("<table border=1>" . BR);
-        echo ("<tr>");
-        foreach ($t[0] as $k => $f) {
-            echo ("<th>$k</th>");
-        }
-        echo ("</tr>");
-        foreach ($t as $k => $f) {
-            echo ("<tr>");
-            foreach ($f as $v) {
-                echo ("<td>$v</td>\n");
-            }
-            echo ("</tr>\n");
-        }
-        echo ("</table>\n");
-    }
-    function tablaCR($t)
-    {
-        $s = "<table border=1>" . BR;
-        $s .= "<tr>";
-        foreach ($t[0] as $k => $f) {
-            $s .= "<th>$k</th>";
-        }
-        $s .= "</tr>";
-        foreach ($t as $k => $f) {
-            $s .= "<tr>";
-            foreach ($f as $v) {
-                $s .= "<td>$v</td>\n";
-            }
-            $s .= "</tr>\n";
-        }
-        $s . "</table>\n";
-        echo $s;
-    }
-
+    /*
+    Crea una conjunto de enlaces en función de los valores que contiene la constante OPS
+    del fichero const.inc.php y se modifica el texto que se muestra en función del idioma
+    */
     private function menu_nav()
     {
         $s = "";
@@ -65,17 +41,24 @@ class Vista
         return $s;
     }
 
-    private function hola($ses)
+    /*
+    Genera una cabecera con un mensaje de bienvenida en función del idioma de la clase
+    y del nombre del usuario
+    */
+    private function header_welcome($usr)
     {
-        $m =  "<h1>" . LANGS[$this->lang]['welcome'] . ", " . $ses['user'] . "</h1>\n";
-
-
+        $m =  "<h1>" . LANGS[$this->lang]['welcome'] . ", " . $usr . "</h1>\n";
         return $m;
     }
 
-    private function formIdiom()
+    /*
+    Genera un formulario para poder establecer el idioma de la página, establecerán tantos
+    idiomas como tengamos almacenados en la constante LANGS del fichero const.inc.php
+    también se seleccionará por defecto en el <select> el idioma del objeto Vista
+    */
+    private function formIdiom($route)
     {
-        $f = "<form action = '" . $_SERVER['PHP_SELF'] . "' method='POST'>\n";
+        $f = "<form action = '" . $route . "' method='POST'>\n";
         $f .= "<select name='lang'>\n";
         foreach (LANGS as $k => $v) {
             $f .= "<option value='$k' ";
@@ -88,14 +71,15 @@ class Vista
         return $f;
     }
 
-    public function cabecera()
+    //Permite generar
+    public function cabecera($usr, $route)
     {
         $s = "<div style='width:100%; height: 20%; text-align:center; margin:1%'>\n";
         $s .= "<h1>" . TTL . "</h1>\n";
 
         $s .= $this->menu_nav() . BR;
-        $s .= $this->hola($_SESSION);
-        $s .= $this->formIdiom();
+        $s .= $this->header_welcome($usr);
+        $s .= $this->formIdiom($route);
 
         $s .= "</div>\n";
         return $s;
@@ -157,7 +141,7 @@ class Vista
         return $form;
     }
 
-    public function formLogin()
+    public function formLogin($route)
     {
         $l = LANGS[$this->lang];
         $f = "<h1>" . $l["initMssg"] . "</h1>\n";
@@ -167,15 +151,15 @@ class Vista
         $f .= "<label for='pass'>" . $l["pass"] . "</label>\n";
         $f .= "<input id='pass' type='password' name='pass'>" . BR;
         $f .= "<input type='submit' value='Login' name='enviar'>\n</form>\n";
-        echo $f . BR . $this->formIdiom();
+        echo $f . BR . $this->formIdiom($route);
     }
 
     public function frontMenu()
     {
-        $roll = $_SESSION['roll'];
+        $rol = $_SESSION['rol'];
         $f = "<fieldset style='border: 2px solid black; height: 50%'>\n";
         $f .= "<legend>" . LANGS[$this->lang]["menu"] . ": </legend>\n";
-        foreach (CRUD[$roll] as $v) {
+        foreach (CRUD[$rol] as $v) {
             $f .= "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
             $f .= "<input type='submit' name='$v' value='" . LANGS[$this->lang][$v] . "'>" . BR;
             $f .= "</form>\n";

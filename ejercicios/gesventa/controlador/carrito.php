@@ -14,18 +14,23 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     <?php
     require_once("../vista/vista.inc.php");
     require_once("../modelo/productoDAO.inc.php");
+    require_once("../modelo/model.inc.php");
+
     $v = new Vista();
     $p = new ProductoDAO();
+    $m = new Modelo();
+
     if (isset($_POST['idiom'])) $v->setLang($_POST["lang"]);
     else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
     $_SESSION["lang"] = $v->getLang();
 
-    echo $v->cabecera();
+    echo $v->cabecera($_SESSION["user"]);
 
-    $cart = unserialize($_COOKIE[$_SESSION["user"]]);
-    $prods = $p->gets($cart["cart"]);
-    $allFields = array_keys($p->allFields("productos"));
-    echo $v -> allProds($prods, $allFields);
+    $cart = unserialize($_COOKIE[$_SESSION["user"] . "_cart"]);
+    $prods = $p->gets(array_keys($cart));
+    //var_dump($prods);
+    $allFieldsProd = array_keys($m->allFields("productos"));
+    echo $v -> allProds($prods, $allFieldsProd);
     ?>
 </body>
 </html>

@@ -28,8 +28,48 @@ class Modelo
         return $mssg;
     }
 
-    function roll() {
-        if($_SESSION['user'] == "Ana") $_SESSION["roll"] = "adm";
-        else $_SESSION["roll"] = "usr";
+    function getUsrRoll($usr) {
+        $mssg = null;
+        if (!isset($usr)) {
+            $mssg = "nouser";
+        } else {
+            try {
+                $c = new Conn();
+                $bd = $c->getConn();
+                $stmt = $bd->prepare("SELECT rol FROM usuarios WHERE USR = :usr");
+                $stmt->execute([':usr' => $usr]);
+                $rol = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                $mssg = "fail";
+            } finally {
+                $c->close();
+            }
+        }
+        if(isset($mssg)) return $mssg;
+        else return $rol[0]["rol"];
     }
+
+    public function allFields($table)
+    {
+        $mssg = [];
+        try {
+            $dbh = new Conn();
+            $bd = $dbh->getConn();
+            //Consulta SIN PREPARAR
+            $q = "DESCRIBE $table";
+            $prods = $bd->query($q);
+            $mssg = $prods->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return NULL;
+        } finally {
+            $dbh->close();
+        }
+        $res = [];
+        foreach ($mssg as $v) {
+            $type = explode("(", $v["Type"]);
+            $res[$v["Field"]] = $type[0];
+        }
+        return $res;
+    }
+
 }

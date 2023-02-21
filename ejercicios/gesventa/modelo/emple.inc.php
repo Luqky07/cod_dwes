@@ -1,5 +1,5 @@
 <?php
-//emple.inc.php
+//Son constantes de la base de datos
 
 define('HOST', 'localhost');
 define('BD', 'gesventa');

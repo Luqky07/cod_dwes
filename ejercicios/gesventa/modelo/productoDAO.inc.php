@@ -77,34 +77,8 @@ class ProductoDAO
         if (isset($mssg)) return $mssg;
         else return $filterProds;
     }
-
-/* 
-Cambiar allFields a modelo porque productoDAO solo deberías interactuar con cosas de los
-productos 
-*/
-    public function allFields($table)
-    {
-        $mssg = [];
-        try {
-            $dbh = new Conn();
-            $bd = $dbh->getConn();
-            //Consulta SIN PREPARAR
-            $q = "DESCRIBE $table";
-            $prods = $bd->query($q);
-            $mssg = $prods->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            return NULL;
-        } finally {
-            $dbh->close();
-        }
-        $res = [];
-        foreach ($mssg as $v) {
-            $type = explode("(", $v["Type"]);
-            $res[$v["Field"]] = $type[0];
-        }
-        return $res;
-    }
-    public function getFilter($datos)
+    
+    public function getFilter($datos, $allFieldsProd)
     {
         try {
             $dbh = new Conn();
@@ -112,9 +86,8 @@ productos
 
             //Consulta SIN PREPARAR
             $q = "SELECT * FROM PRODUCTOS WHERE";
-            $allFields = $this->allFields("productos");
             $allEmpty = true;
-            foreach (array_keys($allFields) as $k) {
+            foreach (array_keys($allFieldsProd) as $k) {
                 if (!empty($datos["filter_" . $k]) && $k != "imagen") {
                     $allEmpty = false;
                     if($k == "pvp" || $k == "existencias"){
@@ -128,7 +101,7 @@ productos
             }
             $q = substr($q, 0, -3);
             $values = [];
-            foreach (array_keys($allFields) as $k) {
+            foreach (array_keys($allFieldsProd) as $k) {
                 if (!empty($datos["filter_" . $k]) && $k != "imagen") {
                     if($k == "nom_prod" || $k == "prov") $values[":" . $k] = "%" . $datos["filter_" . $k] . "%";
                     else $values[":" . $k] = $datos["filter_" . $k];
@@ -146,19 +119,18 @@ productos
         return $filterProds;
     }
 
-    public function insert($datos) {
+    public function insert($datos, $allFieldsProd) {
         try {
             $dbh = new Conn();
             $bd = $dbh->getConn();
 
             //Consulta SIN PREPARAR
-            $allFields = $this->allFields("productos");
             $q = "INSERT INTO PRODUCTOS (cod";
-            foreach ($allFields as $k => $v) {
+            foreach ($allFieldsProd as $k => $v) {
                 if (!empty($datos["new_" . $k]) && $k != "imagen") $q .= ", " . $k;
             }
             $q .= ") values (" . $this->lastCod() + 1;
-            foreach (array_keys($allFields) as $k) {
+            foreach (array_keys($allFieldsProd) as $k) {
                 if (!empty($datos["new_" . $k]) && $k != "imagen") $q .= ", '" . $datos["new_" . $k] . "'";
             }
             $q .= ")";
