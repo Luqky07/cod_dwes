@@ -71,7 +71,10 @@ class Vista
         return $f;
     }
 
-    //Permite generar
+    /*
+    Permite generar una cabecera donde se agrupan el menú de navegación, el saludo al 
+    usuario y el formulario que permite cambiar el idioma de la página
+    */
     public function cabecera($usr, $route)
     {
         $s = "<div style='width:100%; height: 20%; text-align:center; margin:1%'>\n";
@@ -86,11 +89,11 @@ class Vista
     }
 
     /*
-    A mejorar:
-        -Cambiar la función para que trabaje recibiendo un array y no usando métodos del
-        Modelo.
+    En función de los productos que recibe y los campos que quiere mostrar se genera una
+    tabla con toda la información de los productos y también un formulario para añadir
+    los productos al carrito
     */
-    public function allProds($prods, $allFields)
+    public function allProds($prods, $allFields, $route)
     {
         if (empty($prods)) return "<h1 style='text-align:center;'>" . LANGS[$this->lang]["noProd"] . "</h1>\n";
         else {
@@ -99,27 +102,34 @@ class Vista
             foreach ($allFields as $k) {
                 $list .= "<th>" . LANGS[$this->lang][$k] . "</th>\n";
             }
+            $list .= "<th>" . LANGS[$this->lang]["addCart"] . "</th>\n";
             $list .= "</tr>\n</thead>\n<tbody>\n";
             foreach ($prods as $p) {
                 $list .= "<tr style='padding: 0 20% 0 0;'>\n";
                 foreach ($p as $k => $v) {
                     if ($k == "imagen") $list .= "<td style='left:10px; padding-left: 30px;'><img src='../img/$v'></td>\n";
-                    else if ($k == "existencias") $list .= $this->frontFormBuy($p);
                     else $list .= "<td style='left:10px; padding-left: 30px;'>$v</td>\n";
                 }
+                $list .= $this->frontFormBuy($p, $route);
             }
             $list .= "</tr>\n</tbody>\n</table>\n";
             return $list;
         }
     }
 
-    public function frontFormBuy($p)
+    /*
+    Función que recibe un producto por parametro, si no hay existencias muestra un mensaje
+    en el idioma correspondiente, en caso de que haya existencias generará un formulario
+    para poder añadir al carrito un máximo de 5 productos o la cantidad de productos que
+    haya disponibles
+    */
+    public function frontFormBuy($p, $route)
     {
         $form = "<td style='left:10px; padding-left: 30px;'>\n";
         if ($p["existencias"] == 0) {
             $form .= "<strong>" . LANGS[$this->lang]["notAvailable"] . "</strong>\n";
         } else if ($p["existencias"] > 5) {
-            $form .= "<form method = 'POST' action = '" . $_SERVER['PHP_SELF'] . "'>\n";
+            $form .= "<form method = 'POST' action = '$route'>\n";
             $form .= "<select name='num_prods'>\n";
             for ($i = 1; $i <= 5; $i++) {
                 $form .= "<option value = '" . $p["cod"] . "_$i" . "'>$i</option>\n";
@@ -128,7 +138,7 @@ class Vista
             $form .= "<input type='submit' name='addProduct' value='" . LANGS[$this->lang]["add"] . "'>\n";
             $form .= "</form>\n";
         } else {
-            $form .= "<form method = 'POST' action = '" . $_SERVER['PHP_SELF'] . "'>\n";
+            $form .= "<form method = 'POST' action = '$route'>\n";
             $form .= "<select name='num_prods'>\n";
             for ($i = 1; $i <= $p["existencias"]; $i++) {
                 $form .= "<option value = '" . $p["cod"] . "_$i" . "'>$i</option>\n";
@@ -141,11 +151,15 @@ class Vista
         return $form;
     }
 
+    /*
+    Crea un formulario de login para la página de login y el formulario para cambiar el
+    idioma de la página
+    */
     public function formLogin($route)
     {
         $l = LANGS[$this->lang];
         $f = "<h1>" . $l["initMssg"] . "</h1>\n";
-        $f .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+        $f .= "<form method='post' action='$route'>\n";
         $f .= "<label for='user'>" . $l["user"] . "</label>\n";
         $f .= "<input id='user' type='text' name='user'>" . BR;
         $f .= "<label for='pass'>" . $l["pass"] . "</label>\n";
@@ -154,13 +168,17 @@ class Vista
         echo $f . BR . $this->formIdiom($route);
     }
 
-    public function frontMenu()
+    /*
+    Crea una sección de menú en función del rol del usuario, ya que no todos los usuarios
+    tendrán disponibles las mismas funciones dentro de la página, las funciones que puede
+    tener un usuario se definen en la constante CRUD del archivo "const.in.php"
+    */
+    public function frontMenu($route, $rol)
     {
-        $rol = $_SESSION['rol'];
         $f = "<fieldset style='border: 2px solid black; height: 50%'>\n";
         $f .= "<legend>" . LANGS[$this->lang]["menu"] . ": </legend>\n";
         foreach (CRUD[$rol] as $v) {
-            $f .= "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+            $f .= "<form method='POST' action='$route'>\n";
             $f .= "<input type='submit' name='$v' value='" . LANGS[$this->lang][$v] . "'>" . BR;
             $f .= "</form>\n";
         }
@@ -169,11 +187,19 @@ class Vista
         return $f;
     }
 
-    public function frontSeccion($allFields, $seccion, $provs)
+    /*
+    En función de la operación que se quiera realizar en la parte de la sección se
+    mostrarán opciones diferentes, si se quiere activar la sección de filtros se creará
+    un formulario para poder buscar por filtros, si se quiere añadir un nuevo producto se
+    se creará un nuevo formulario pero diferente al de filtros para poder añadir un nuevo
+    producto, y si no se quiere hacer nada se mostrará un mensaje dependiendo del idioma
+    toDo -> Crear sección para borrar y para modificar. Refactorizar en varias funciones
+    */
+    public function frontSeccion($allFields, $seccion, $provs, $route)
     {
         if ($seccion == "filter") {
             $f = "<legend>" . LANGS[$this->lang]["filters"] . ": </legend>\n";
-            $f .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+            $f .= "<form method='post' action='$route'>\n";
             foreach ($allFields as $k => $v) {
                 if ($k != "imagen") {
                     $f .= "<label for='filter_$k'>" . LANGS[$this->lang][$k] . "</label>\n";
@@ -193,7 +219,7 @@ class Vista
             $f .= "</form>\n";
         } else if ($seccion == "new") {
             $f = "<legend>" . LANGS[$this->lang]["newProd"] . ": </legend>\n";
-            $f .= $this->frontNewProd($allFields, $provs);
+            $f .= $this->frontNewProd($allFields, $provs, $route);
         } else {
             $f = "<legend>" . LANGS[$this->lang]["section"] . ": </legend>\n";
             $f .= "<h3>" . LANGS[$this->lang]["filtreMssg"] . "</h3>\n";
@@ -202,31 +228,42 @@ class Vista
         return $f;
     }
 
-    public function frontCuerpo($prods, $allFields)
+    //Crea un div en el que se muestran los productos que se reciben por parámetro
+    public function frontCuerpo($prods, $allFields, $route)
     {
         $f = "<div id='cuerpo' style='width:70%; float:left; height: 95%;'>\n";
         $f .= "<fieldset style='border: 2px solid black; height: 100%; overflow:scroll;'>\n";
         $f .= "<legend>" . LANGS[$this->lang]["prods"] . ": </legend>\n";
-        $f .= $this->allProds($prods, array_keys($allFields));
+        $f .= $this->allProds($prods, array_keys($allFields), $route);
         $f .= "</fieldset>\n</div>\n";
         return $f;
     }
 
-    public function frontArticle($prods, $allFields, $seccion, $provs)
+    /*
+    Agrupa toda la información de la página en un único div, que incluye, el menú con las
+    opciones correspondientes dependiendo del rol, la sección con las operaciones que se
+    quieren realizar(filtro, añadir) y la tabla con los productos
+    */
+    public function frontArticle($prods, $allFields, $seccion, $provs, $route, $rol)
     {
         $f = "<div style='overflow:hidden; width:100%; height: 380px'>\n";
         $f .= "<div id='tables' style='float:left; width:30%; height: 89.7%'>\n";
-        $f .= $this->frontMenu();
-        $f .= $this->frontSeccion($allFields, $seccion, $provs);
+        $f .= $this->frontMenu($route, $rol);
+        $f .= $this->frontSeccion($allFields, $seccion, $provs, $route);
         $f .= "</div>\n";
-        $f .= $this->frontCuerpo($prods, $allFields);
+        $f .= $this->frontCuerpo($prods, $allFields, $route);
         $f .= "</div>\n";
         return $f;
     }
 
-    public function frontNewProd($allFields, $provs)
+    /*
+    Crea un formulario para añadir nuevos productos, como nota interesante, recibe por
+    parámetros los proveedores disponibles y los genera como una etiqueta select para ser
+    compatible con la base de datos
+    */
+    public function frontNewProd($allFields, $provs, $route)
     {
-        $f = "<form method='POST' action='" . $_SERVER['PHP_SELF'] . "'>\n";
+        $f = "<form method='POST' action='$route'>\n";
         foreach ($allFields as $k => $v) {
             if ($k == "prov") {
                 $f .= "<label for='new_$k'>" . LANGS[$this->lang][$k] . "</label>\n";
@@ -248,23 +285,45 @@ class Vista
                 }
             }
         }
-        $f .= "<input type='submit' name='newProd' value='" . LANGS[$this->lang]["btnNewProd"] . "'>\n";
+        $f .= "<input type='submit' name='newProd' value='" . LANGS[$this->lang]["add"] . "'>\n";
         $f .= "</form>\n";
         return $f;
     }
 
-    public function mostrarBoton($post)
+    public function carritoProds($prods, $cart, $allFields, $route)
     {
-        $f = "";
-        foreach ($post as $k => $v) {
-            foreach (CRUD as $roll) {
-                foreach ($roll as $c) {
-                    if ($k == $c) {
-                        if (isset($post[$k])) $f = "<h3>Se ha pulsado el botón $v</h3>";
-                    }
+        $f = "<div style='overflow:hidden; width:100%; height: 350px'>\n";
+        $f .= "<fieldset style='border: 2px solid black; height: 93%; overflow:scroll;'>\n";
+        $f .= "<legend>" . LANGS[$this->lang]["shoppingCart"] . ": </legend>\n";
+        if (empty($prods)) return "<h1 style='text-align:center;'>" . LANGS[$this->lang]["empty"] . "</h1>\n";
+        else {
+            $f .= "<table style='border: none; width:100%;'>\n<thead>\n";
+            $f .= "<tr style='padding: 0 20% 0 0;'>\n";
+            foreach ($allFields as $k) {
+                if ($k == "existencias") $f .= "<th>" . LANGS[$this->lang]["prods"] . "</th>";
+                else $f .= "<th>" . LANGS[$this->lang][$k] . "</th>\n";
+            }
+            $f .= "</tr>\n</thead>\n<tbody>\n";
+            foreach ($prods as $p) {
+                $f .= "<tr style='padding: 0 20% 0 0;'>\n";
+                foreach ($p as $k => $v) {
+                    if ($k == "imagen") $f .= "<td style='left:10px; padding-left: 30px;'><img src='../img/$v'></td>\n";
+                    else if ($k == "existencias") $f .= "<td style='left:10px; padding-left: 30px;'>" . $cart[$p["cod"]] . "</td>\n";
+                    else $f .= "<td style='left:10px; padding-left: 30px;'>$v</td>\n";
                 }
             }
+            $f .= "</tr>\n</tbody>\n</table>\n";
         }
-        echo $f;
+        $f .= "</fieldset>\n</div>\n";
+        return $f;
+    }
+
+    public function errores($errs)
+    {
+        $f = "";
+        foreach ($errs as $e) {
+            $f .= "<h3> $e </h3>";
+        }
+        return $f;
     }
 }

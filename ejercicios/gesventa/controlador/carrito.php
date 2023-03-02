@@ -24,13 +24,14 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     else if (isset($_SESSION["lang"])) $v->setLang($_SESSION["lang"]);
     $_SESSION["lang"] = $v->getLang();
 
-    echo $v->cabecera($_SESSION["user"]);
+    echo $v->cabecera($_SESSION["user"], $_SERVER['PHP_SELF']);
 
     $cart = unserialize($_COOKIE[$_SESSION["user"] . "_cart"]);
     $prods = $p->gets(array_keys($cart));
     //var_dump($prods);
     $allFieldsProd = array_keys($m->allFields("productos"));
-    echo $v -> allProds($prods, $allFieldsProd);
+    var_dump($cart);
+    echo $v -> carritoProds($prods, $cart, $allFieldsProd, $_SERVER['PHP_SELF']);
     ?>
 </body>
 </html>

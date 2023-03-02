@@ -1,7 +1,16 @@
 <?php
+
+//Constante para realizar un salto de linea en el documento HTML de manera mas sencilla
 define("BR", "\n<br>\n");
+
+//Constante para definir el nombre de nuestra aplicación web
 define("TTL", "GESVENTAS APP");
 
+/*
+Constante que contiene un array por cada idioma que queramos tener disponible en nuestra
+aplicación web, cada idioma contiene un array con las mismas claves, solo se modifican los
+valores en función del idioma correspondiente
+*/
 define("LANGS", [
     'es' => [
         "lang" => "ESPAÑOL",
@@ -34,12 +43,14 @@ define("LANGS", [
         "update" => "Actualizar",
         "filters" => "Filtros",
         "newProd" => "Añadir nuevo producto",
-        "btnNewProd" => "Añadir",
         "noProd" => "No se han encontrado productos",
         "noFilter" => "Quitar filtros",
         "prods" => "Productos",
         "add" => "Añadir",
-        "notAvailable" => "Producto no disponible"
+        "notAvailable" => "Producto no disponible",
+        "shoppingCart" => "Carrito de la compra",
+        "empty" => "Carrito vacio",
+        "addCart" => "Añadir al carrito"
     ],
     'en' => [
         "lang" => "ENGLISH",
@@ -73,12 +84,14 @@ define("LANGS", [
         "update" => "Update",
         "filters" => "Filters",
         "newProd" => "Add new product",
-        "btnNewProd" => "Add",
         "noProd" => "No products found",
         "noFilter" => "Remove filters",
         "prods" => "Products",
         "add" => "Add",
-        "notAvailable" => "Product not avilable"
+        "notAvailable" => "Product not avilable",
+        "shoppingCart" => "Shopping cart",
+        "empty" => "Empty cart",
+        "addCart" => "Add to cart"
     ],
     'fr' => [
         "lang" => "FRANÇAIS",
@@ -112,12 +125,14 @@ define("LANGS", [
         "update" => "Mettre à jour",
         "filters" => "Filtres",
         "newProd" => "Ajouter un nouveau produit",
-        "btnNewProd" => "Ajouter",
         "noProd" => "Aucun produit trouvé",
         "noFilter" => "Supprimer les filtres",
         "prods" => "Produits",
         "add" => "Ajouter",
-        "notAvailable" => "Produit non disponible"
+        "notAvailable" => "Produit non disponible",
+        "shoppingCart" => "Panier",
+        "empty" => "Panier vide",
+        "addCart" => "Ajouter au panier"
     ],
     'dc' => [
         "lang" => "DEUTSCH",
@@ -150,15 +165,18 @@ define("LANGS", [
         "update" => "Aktualisieren",
         "filters" => "Filter",
         "newProd" => "Neues Produkt hinzufügen",
-        "btnNewProd" => "Hinzufügen",
         "noProd" => "Keine Produkte gefunden",
         "noFilter" => "Filter entfernen",
         "prods" => "Produkte",
         "add" => "Hinzufügen",
-        "notAvailable" => "Produkt nicht verfügbar"
+        "notAvailable" => "Produkt nicht verfügbar",
+        "shoppingCart" => "Einkaufswagen",
+        "empty" => "leerer Warenkorb",
+        "addCart" => "In den warenkorb legen"
     ]
 ]);
 
+//Constante que contiene las direcciones de las paginas que forman nuestra aplicación web
 define('OPS', [
     //"login" => "login.php",
     // "register" => "registro.php",
@@ -167,6 +185,7 @@ define('OPS', [
     "cart" => "carrito.php"
 ]);
 
+//Constante que contiene las opciones CRUD que podremos realizar en función de nuestro rol
 define('CRUD', [
     "cli" => ["retrieve"],
     "adm" => ["retrieve", "new", "delete", "update"]

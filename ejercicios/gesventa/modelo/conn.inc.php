@@ -2,27 +2,29 @@
 //conn.php
 require_once 'emple.inc.php';
 
+/*
+Clase que devuelve una sola conexión siguiendo el patrón Singleton mediante el cual se
+restringe la creación de objetos de la Conn para garantizar que siempre se devuelve
+una única instancia usando constantes del fichero emple.inc.php y atributos estáticos
+*/
 class Conn
 {
+	private $host = HOST;
+	private $db = BD;
+	private $chrst = CHRST;
+	private $user = USER;
+	private $pwd = PWD;
+	//Es el objeto PDO que vamos a devolver
+	private static $conn;
 
-	//clase que devuelve una sola conexión
-	//utilizamos el patrón Singleton
-
-	//'mysql:dbname=empresa; host=localhost; charset=utf8'
-	private $host = HOST; 		//'localhost';
-	private $db = BD; 			//'empresa';
-	private $chrst = CHRST; 	//'utf8';
-	private $user = USER; 		//'root';
-	private $pwd = PWD;			//'root';
-	private static $conn; //objeto PDO que vamos a devolver
-
+	/*
+	Devuelve un objeto PDO para establecer conexión con la base de datos que se especifique
+	según las constantes que indiquemos
+	*/
 	function getConn()
 	{
-
-		$conn_str = 'mysql:dbname=' . $this->db;
-		$conn_str .= '; host=' . $this->host;
+		$conn_str = 'mysql:dbname=' . $this->db . '; host=' . $this->host;
 		$conn_str .= '; charset=' . $this->chrst;
-		//echo $conn_str;
 		try {
 
 			Conn::$conn = new PDO(
@@ -30,9 +32,6 @@ class Conn
 				$this->user,
 				$this->pwd
 			);
-
-			//ahora, podemos configurar otros aspectos
-			//del objeto PDO
 
 			Conn::$conn->setAttribute(
 				PDO::ATTR_ERRMODE,
@@ -44,28 +43,11 @@ class Conn
 		}
 
 		return Conn::$conn;
-	} //getConn
+	}
 
+	//Función para cerrar la conexión a la base de datos
 	function close()
 	{
 		Conn::$conn = null;
 	}
-}//class
-//Ejemplo básico para ver si conecta y ejecuta SQL
-/* try{
-	
-	$c= new Conn();		
-	$bd= $c->getConn();
-	echo "<h1>Conectado</h1>";
-	
-	//consultamos los usuarios de mysql
-	
-	$sql= "SELECT * FROM empleados";
-	$users= $bd->query($sql);
-	echo "</br>".$users->rowCount();
-	
-	$c->close();
-	
-}catch(PDOException $e){
-	echo "<h1>Error</h1>";
-} */
+}

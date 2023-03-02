@@ -87,7 +87,10 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
         if (isset($_COOKIE[$_SESSION["user"] . "_cart"])) $cart = unserialize($_COOKIE[$_SESSION["user"] . "_cart"]);
         else $cart = [];
         
-        if (isset($cart[$info[0]])) $cart[$info[0]] += $info[1];
+        if (isset($cart[$info[0]])) {
+            if(($cart[$info[0]] + $info[1]) > 5) $_SESSION["error"][] = "No puedes comprar tantos productos";
+            else $cart[$info[0]] += $info[1];
+        }
         else $cart[$info[0]] = (int) $info[1];
         
         setcookie($_SESSION["user"] . "_cart", serialize($cart), time() + (86400 * 30), "/");
@@ -110,11 +113,16 @@ if (!isset($_SESSION["user"])) header("Location: login.php")
     */
     echo $v->cabecera($_SESSION["user"], $_SERVER['PHP_SELF']);
 
+    if(isset($_SESSION["error"])) {
+        echo $v->errores($_SESSION["error"]);
+        if (!isset($_POST["addProduct"]))unset($_SESSION["error"]);
+    }
+
     //Se almacenarán todos los proveedores de productos
-    $provs = $p->getAllProvs();
+    $provs = $m->getAllProvs();
 
     //Se imprimirá todo el contenido de la página mediante la clase Vista
-    echo $v->frontArticle($prods, $allFieldsProd, $seccion, $provs);
+    echo $v->frontArticle($prods, $allFieldsProd, $seccion, $provs, $_SERVER['PHP_SELF'], $_SESSION['rol']);
     ?>
 </body>
 
